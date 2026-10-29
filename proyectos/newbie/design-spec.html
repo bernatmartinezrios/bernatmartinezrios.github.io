@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>newbie — Design Specification</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700&family=Fraunces:opsz,wght@9..144,200;9..144,300;9..144,400;9..144,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: oklch(0.32 0.06 150);
+    --pine:   oklch(0.42 0.07 148);
+    --sage:   oklch(0.62 0.08 148);
+    --moss:   oklch(0.78 0.07 145);
+    --mint:   oklch(0.94 0.028 155);
+    --mint-2: oklch(0.97 0.018 155);
+    --lime:   oklch(0.86 0.14 132);
+    --paper:  oklch(0.987 0.004 150);
+    --paper-2:oklch(0.97  0.005 150);
+    --ink:    oklch(0.20 0.015 150);
+    --ink-2:  oklch(0.42 0.012 150);
+    --ink-3:  oklch(0.62 0.010 150);
+    --hair:   oklch(0.90 0.008 150);
+    --hair-2: oklch(0.85 0.010 150);
+    --warn:   oklch(0.78 0.13 70);
+    --rose:   oklch(0.72 0.11 25);
+    --page:   oklch(0.985 0.006 150);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: 'Manrope', system-ui, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(1100px 520px at 80% -5%, oklch(0.95 0.03 150) 0%, transparent 55%),
+      var(--page);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.55;
+  }
+  .serif { font-family: 'Fraunces', Georgia, serif; }
+  .mono  { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+
+  /* Layout */
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
+  .doc  { padding-bottom: 140px; }
+
+  /* Cover */
+  .cover {
+    min-height: 86vh; display: flex; flex-direction: column; justify-content: center;
+    padding: 80px 0 56px;
+  }
+  .brand {
+    font-family: 'Fraunces', serif; font-weight: 400; font-size: 30px;
+    letter-spacing: -0.02em; color: var(--forest);
+  }
+  .brand .dot { color: var(--lime); }
+  .cover h1 {
+    font-family: 'Fraunces', serif; font-weight: 200;
+    font-size: clamp(48px, 8vw, 104px); line-height: 0.98; letter-spacing: -0.035em;
+    margin: 28px 0 0;
+  }
+  .cover h1 em { font-style: italic; color: var(--pine); }
+  .cover .lede {
+    font-size: 19px; color: var(--ink-2); max-width: 540px; margin: 28px 0 0; font-weight: 300;
+  }
+  .meta-row {
+    display: flex; flex-wrap: wrap; gap: 36px 56px; margin-top: 52px;
+    padding-top: 32px; border-top: 1px solid var(--hair);
+  }
+  .meta-row .k { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-3); }
+  .meta-row .v { font-size: 16px; margin-top: 5px; font-weight: 500; }
+
+  /* Section scaffolding */
+  section { padding: 76px 0 0; scroll-margin-top: 24px; }
+  .sec-head { display: flex; align-items: baseline; gap: 18px; margin-bottom: 8px; }
+  .sec-num {
+    font-family: ui-monospace, monospace; font-size: 13px; color: var(--lime);
+    font-weight: 500; letter-spacing: 0.04em; padding-top: 8px;
+  }
+  .sec-title {
+    font-family: 'Fraunces', serif; font-weight: 300; font-size: 40px;
+    letter-spacing: -0.025em; margin: 0; line-height: 1.05;
+  }
+  .sec-intro { color: var(--ink-2); font-size: 16.5px; max-width: 640px; margin: 14px 0 38px; font-weight: 300; }
+  .sub { font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); font-weight: 600; margin: 40px 0 18px; }
+
+  /* Cards / grids */
+  .grid { display: grid; gap: 14px; }
+  .panel {
+    background: var(--paper); border: 1px solid var(--hair); border-radius: 18px; padding: 22px;
+  }
+
+  /* Color swatches */
+  .swatches { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 880px){ .swatches { grid-template-columns: repeat(2, 1fr);} }
+  .swatch { border: 1px solid var(--hair); border-radius: 16px; overflow: hidden; background: var(--paper); }
+  .swatch .chip { height: 92px; display: flex; align-items: flex-end; padding: 10px; }
+  .swatch .body { padding: 12px 14px 14px; }
+  .swatch .name { font-weight: 600; font-size: 14px; }
+  .swatch .role { font-size: 12px; color: var(--ink-3); margin-top: 1px; }
+  .swatch .val { font-family: ui-monospace, monospace; font-size: 10.5px; color: var(--ink-2); margin-top: 9px; word-break: break-all; }
+  .pair-dark { background: oklch(0.16 0.008 155); border-radius: 14px; padding: 4px; }
+
+  /* Type specimens */
+  .spec { padding: 20px 0; border-bottom: 1px solid var(--hair); display: grid; grid-template-columns: 1fr 230px; gap: 24px; align-items: baseline; }
+  .spec:last-child { border-bottom: 0; }
+  .spec .attrs { font-family: ui-monospace, monospace; font-size: 11.5px; color: var(--ink-3); line-height: 1.7; }
+  .spec .attrs b { color: var(--ink-2); font-weight: 600; }
+
+  /* Token tables */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); font-weight: 600; padding: 0 16px 12px; border-bottom: 1px solid var(--hair); }
+  td { padding: 13px 16px; border-bottom: 1px solid var(--hair); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  td .tok { font-family: ui-monospace, monospace; font-size: 12.5px; color: var(--pine); font-weight: 500; }
+  td .desc { color: var(--ink-2); }
+  .swatch-dot { display: inline-block; width: 14px; height: 14px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.12); vertical-align: -2px; margin-right: 8px; }
+
+  /* Component demos */
+  .demo { background: var(--paper); border: 1px solid var(--hair); border-radius: 18px; padding: 30px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+  .demo.col { flex-direction: column; align-items: stretch; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: none; cursor: default; font-family: inherit; font-weight: 400; border-radius: 999px; }
+  .btn-primary { background: var(--forest); color: var(--paper); padding: 16px 28px; font-size: 16px; letter-spacing: -0.01em; }
+  .btn-secondary { background: var(--mint); color: var(--forest); padding: 14px 22px; font-size: 15px; }
+  .btn-ghost { background: transparent; color: var(--ink-2); padding: 12px 18px; font-size: 14px; }
+  .uchip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: var(--mint); color: var(--forest); font-size: 12px; border: 0.5px solid transparent; }
+  .uchip.outline { background: transparent; border: 0.5px solid var(--hair-2); color: var(--ink-2); }
+  .ucard { background: var(--paper); border: 0.5px solid var(--hair); border-radius: 20px; padding: 16px; box-shadow: 0 1px 2px rgba(20,40,30,0.04); }
+  .uinput { width: 100%; background: var(--paper-2); border: 0.5px solid var(--hair-2); border-radius: 14px; padding: 14px 16px; font-family: inherit; font-size: 15px; color: var(--ink-3); }
+  .label-cap { font-size: 11px; color: var(--ink-3); font-family: ui-monospace, monospace; margin-top: 14px; }
+
+  /* Click map */
+  .flow { display: flex; flex-direction: column; gap: 10px; }
+  .flow-row { display: flex; align-items: stretch; gap: 10px; flex-wrap: wrap; }
+  .node {
+    border: 1px solid var(--hair); border-radius: 12px; background: var(--paper);
+    padding: 11px 15px; font-size: 13.5px; font-weight: 500; display: flex; align-items: center; gap: 8px;
+  }
+  .node .mono { font-size: 11px; color: var(--ink-3); font-weight: 400; }
+  .node.start { background: var(--forest); color: var(--paper); border-color: var(--forest); }
+  .node.tab { background: var(--mint); border-color: transparent; color: var(--forest); }
+  .arr { display: flex; align-items: center; color: var(--ink-3); font-size: 18px; }
+
+  .maptable td:first-child { white-space: nowrap; }
+  .pill-screen { font-family: ui-monospace, monospace; font-size: 12px; background: var(--mint-2); color: var(--pine); padding: 3px 9px; border-radius: 7px; font-weight: 500; }
+  .trigger { color: var(--ink); font-weight: 500; }
+  .dest { font-family: ui-monospace, monospace; font-size: 12.5px; color: var(--pine); }
+  .dest .to { color: var(--ink-3); margin: 0 6px; }
+
+  /* TOC */
+  .toc { display: grid; grid-template-columns: repeat(2,1fr); gap: 2px 40px; margin-top: 30px; }
+  @media (max-width:880px){ .toc { grid-template-columns: 1fr; } }
+  .toc a { display: flex; align-items: baseline; gap: 14px; padding: 12px 4px; text-decoration: none; color: var(--ink); border-bottom: 1px solid var(--hair); transition: color .15s; }
+  .toc a:hover { color: var(--pine); }
+  .toc a .n { font-family: ui-monospace, monospace; font-size: 12px; color: var(--lime); }
+  .toc a .t { font-size: 15.5px; font-weight: 500; }
+  .toc a .arrow { margin-left: auto; color: var(--ink-3); }
+
+  .note { background: var(--mint-2); border: 1px solid var(--mint); border-radius: 14px; padding: 16px 18px; font-size: 14px; color: var(--ink-2); display: flex; gap: 12px; }
+  .note b { color: var(--forest); }
+
+  /* Screen gallery */
+  .gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px 22px; }
+  @media (max-width: 880px){ .gallery { grid-template-columns: repeat(2, 1fr); } }
+  .shot { display: flex; flex-direction: column; gap: 12px; }
+  .shot .frame { border-radius: 26px; overflow: visible; }
+  .shot img { width: 100%; display: block; border-radius: 26px; filter: drop-shadow(0 20px 34px rgba(20,40,30,0.16)); }
+  .shot .cap-t { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+  .shot .cap-r { font-family: ui-monospace, monospace; font-size: 11px; color: var(--pine); margin-top: 1px; }
+  .gal-group { font-family:'Fraunces',serif; font-weight: 300; font-size: 21px; letter-spacing:-0.02em; margin: 40px 0 22px; color: var(--ink); display:flex; align-items:baseline; gap:12px; }
+  .gal-group span { font-family: ui-monospace, monospace; font-size: 11px; color: var(--ink-3); letter-spacing: 0.08em; text-transform: uppercase; }
+  .kbd { font-family: ui-monospace, monospace; font-size: 12px; background: var(--paper-2); border: 1px solid var(--hair-2); border-radius: 6px; padding: 2px 7px; color: var(--ink-2); }
+
+  footer { margin-top: 100px; padding: 40px 0; border-top: 1px solid var(--hair); color: var(--ink-3); font-size: 13px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+  @media print {
+    body { background: #fff; }
+    section { page-break-inside: avoid; }
+    .cover { min-height: auto; }
+  }
+</style>
+</head>
+<body>
+<a id="pf-back" href="../newbie.html" style="position:fixed;top:14px;left:14px;z-index:9999;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:#221C17;color:#fff;font:600 14px/1 system-ui,sans-serif;text-decoration:none;box-shadow:0 6px 18px -8px rgba(0,0,0,.4)" onclick="if(history.length>1){history.back();return false}">← Volver al caso · Back</a>
+
+<div class="doc">
+
+<!-- COVER -->
+<div class="wrap">
+  <header class="cover">
+    <div class="brand">newbie<span class="dot">.</span></div>
+    <h1 class="serif">Design<br><em>Specification</em></h1>
+    <p class="lede">The complete design language for the newbie mobile app — colour, type, components, motion and the full navigation map. A single source of truth for engineering handoff.</p>
+    <div class="meta-row">
+      <div><div class="k">Product</div><div class="v">newbie — social sport</div></div>
+      <div><div class="k">Platform</div><div class="v">iOS · 390 × 844 pt</div></div>
+      <div><div class="k">Themes</div><div class="v">Light &amp; Dark</div></div>
+      <div><div class="k">Languages</div><div class="v">English · Español</div></div>
+      <div><div class="k">Version</div><div class="v">1.1 · Jun 2026</div></div>
+    </div>
+  </header>
+</div>
+
+<!-- TOC -->
+<div class="wrap">
+  <div class="toc">
+    <a href="#foundations"><span class="n">01</span><span class="t">Foundations</span><span class="arrow">→</span></a>
+    <a href="#color"><span class="n">02</span><span class="t">Colour system</span><span class="arrow">→</span></a>
+    <a href="#type"><span class="n">03</span><span class="t">Typography</span><span class="arrow">→</span></a>
+    <a href="#space"><span class="n">04</span><span class="t">Spacing, radius &amp; elevation</span><span class="arrow">→</span></a>
+    <a href="#components"><span class="n">05</span><span class="t">Components</span><span class="arrow">→</span></a>
+    <a href="#icons"><span class="n">06</span><span class="t">Iconography</span><span class="arrow">→</span></a>
+    <a href="#nav"><span class="n">07</span><span class="t">Navigation &amp; click map</span><span class="arrow">→</span></a>
+    <a href="#screens"><span class="n">08</span><span class="t">Screen reference</span><span class="arrow">→</span></a>
+    <a href="#motion"><span class="n">09</span><span class="t">Motion &amp; interaction</span><span class="arrow">→</span></a>
+    <a href="#theming"><span class="n">10</span><span class="t">Theming &amp; i18n</span><span class="arrow">→</span></a>
+    <a href="#architecture"><span class="n">11</span><span class="t">File architecture</span><span class="arrow">→</span></a>
+  </div>
+</div>
+
+<!-- 01 FOUNDATIONS -->
+<div class="wrap">
+<section id="foundations">
+  <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title serif">Foundations</h2></div>
+  <p class="sec-intro">newbie helps people new to a city or a sport find low-pressure activities and the people who host them. The visual language is calm, editorial and outdoorsy — warm greens, generous whitespace, hairline structure and a serif accent for moments of personality.</p>
+
+  <div class="grid" style="grid-template-columns: repeat(3,1fr); gap:14px;">
+    <div class="panel">
+      <div class="sub" style="margin:0 0 10px;">Design principles</div>
+      <p style="font-size:14.5px;color:var(--ink-2);margin:0 0 10px;"><b style="color:var(--ink)">Quiet by default.</b> Content leads; chrome recedes. Hairlines over heavy borders, tone over shadow.</p>
+      <p style="font-size:14.5px;color:var(--ink-2);margin:0 0 10px;"><b style="color:var(--ink)">One accent.</b> Forest green carries every primary action. We never compete it with a second brand colour.</p>
+      <p style="font-size:14.5px;color:var(--ink-2);margin:0;"><b style="color:var(--ink)">Human scale.</b> Large type, soft radii, roomy touch targets (≥ 44 pt).</p>
+    </div>
+    <div class="panel">
+      <div class="sub" style="margin:0 0 10px;">Canvas</div>
+      <table style="font-size:13.5px;">
+        <tr><td style="padding:8px 0;border:0;"><span class="desc">Artboard</span></td><td style="padding:8px 0;border:0;text-align:right;"><b>390 × 844 pt</b></td></tr>
+        <tr><td style="padding:8px 0;border:0;"><span class="desc">Safe top</span></td><td style="padding:8px 0;border:0;text-align:right;"><b>59 pt</b></td></tr>
+        <tr><td style="padding:8px 0;border:0;"><span class="desc">Tab bar</span></td><td style="padding:8px 0;border:0;text-align:right;"><b>~84 pt</b></td></tr>
+        <tr><td style="padding:8px 0;border:0;"><span class="desc">Screen gutter</span></td><td style="padding:8px 0;border:0;text-align:right;"><b>20–24 pt</b></td></tr>
+      </table>
+    </div>
+    <div class="panel">
+      <div class="sub" style="margin:0 0 10px;">Stack</div>
+      <p style="font-size:14.5px;color:var(--ink-2);margin:0 0 8px;">React 18 + a thin custom router (history stack). Styling via CSS custom properties — no framework.</p>
+      <p style="font-size:14.5px;color:var(--ink-2);margin:0;">Theme &amp; language are global providers; both persist to <span class="kbd">localStorage</span>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 COLOR -->
+<section id="color">
+  <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title serif">Colour system</h2></div>
+  <p class="sec-intro">Every colour is a CSS variable defined in <span class="mono" style="font-size:14px;">oklch()</span> for perceptual consistency. Components never hard-code colour — they read tokens, so the dark theme is a pure variable swap. Two families: a green ramp for brand &amp; accent, and a warm-grey neutral ramp for surfaces &amp; text.</p>
+
+  <div class="sub" style="margin-top:8px;">Brand &amp; accent — greens</div>
+  <div class="grid swatches">
+    <div class="swatch"><div class="chip" style="background:var(--forest);color:#fff;"><span class="mono" style="font-size:11px;">--forest</span></div><div class="body"><div class="name">Forest</div><div class="role">Primary actions, active states</div><div class="val">oklch(0.32 0.06 150)</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--pine);color:#fff;"><span class="mono" style="font-size:11px;">--pine</span></div><div class="body"><div class="name">Pine</div><div class="role">Hover / pressed accent</div><div class="val">oklch(0.42 0.07 148)</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--sage);color:#fff;"><span class="mono" style="font-size:11px;">--sage</span></div><div class="body"><div class="name">Sage</div><div class="role">Secondary icon tint</div><div class="val">oklch(0.62 0.08 148)</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--moss);"><span class="mono" style="font-size:11px;">--moss</span></div><div class="body"><div class="name">Moss</div><div class="role">Decorative / illustration</div><div class="val">oklch(0.78 0.07 145)</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--mint);color:var(--forest);"><span class="mono" style="font-size:11px;">--mint</span></div><div class="body"><div class="name">Mint</div><div class="role">Chips, secondary buttons, fills</div><div class="val">oklch(0.94 0.028 155)</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--mint-2);color:var(--forest);"><span class="mono" style="font-size:11px;">--mint-2</span></div><div class="body"><div class="name">Mint&nbsp;2</div><div class="role">Tap hover, tint surfaces</div><div class="val">oklch(0.97 0.018 155)</div></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--lime);color:var(--forest);"><span class="mono" style="font-size:11px;">--lime</span></div><div class="body"><div class="name">Lime</div><div class="role">Notification dots, “new” badges</div><div class="val">oklch(0.86 0.14 132)</div></div></div>
+    <div class="swatch"><div class="chip" style="background:linear-gradient(135deg,var(--warn),var(--rose));color:#fff;"><span class="mono" style="font-size:11px;">--warn / --rose</span></div><div class="body"><div class="name">Warn · Rose</div><div class="role">Alerts, destructive, prices</div><div class="val">0.78 0.13 70 · 0.72 0.11 25</div></div></div>
+  </div>
+
+  <div class="sub">Neutrals — surfaces &amp; text</div>
+  <table>
+    <thead><tr><th>Token</th><th>Role</th><th>Light</th><th>Dark</th></tr></thead>
+    <tbody>
+      <tr><td><span class="swatch-dot" style="background:var(--paper)"></span><span class="tok">--paper</span></td><td class="desc">Primary surface / cards</td><td class="mono" style="font-size:12px">0.987 0.004 150</td><td class="mono" style="font-size:12px">0.205 0.008 158</td></tr>
+      <tr><td><span class="swatch-dot" style="background:var(--paper-2)"></span><span class="tok">--paper-2</span></td><td class="desc">Inputs, recessed fills</td><td class="mono" style="font-size:12px">0.97 0.005 150</td><td class="mono" style="font-size:12px">0.255 0.009 158</td></tr>
+      <tr><td><span class="swatch-dot" style="background:var(--ink)"></span><span class="tok">--ink</span></td><td class="desc">Primary text</td><td class="mono" style="font-size:12px">0.20 0.015 150</td><td class="mono" style="font-size:12px">0.96 0.006 150</td></tr>
+      <tr><td><span class="swatch-dot" style="background:var(--ink-2)"></span><span class="tok">--ink-2</span></td><td class="desc">Secondary text</td><td class="mono" style="font-size:12px">0.42 0.012 150</td><td class="mono" style="font-size:12px">0.76 0.008 150</td></tr>
+      <tr><td><span class="swatch-dot" style="background:var(--ink-3)"></span><span class="tok">--ink-3</span></td><td class="desc">Tertiary / captions, inactive nav</td><td class="mono" style="font-size:12px">0.62 0.010 150</td><td class="mono" style="font-size:12px">0.58 0.009 150</td></tr>
+      <tr><td><span class="swatch-dot" style="background:var(--hair)"></span><span class="tok">--hair</span></td><td class="desc">Hairline dividers (0.5px)</td><td class="mono" style="font-size:12px">0.90 0.008 150</td><td class="mono" style="font-size:12px">0.31 0.008 150</td></tr>
+      <tr><td><span class="swatch-dot" style="background:var(--hair-2)"></span><span class="tok">--hair-2</span></td><td class="desc">Stronger borders, input edge</td><td class="mono" style="font-size:12px">0.85 0.010 150</td><td class="mono" style="font-size:12px">0.40 0.010 150</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note" style="margin-top:24px;"><div>◆</div><div><b>Dark theme rule.</b> The dark palette is applied by setting <span class="kbd">[data-theme="dark"]</span> on the root, which redefines the same token names. Greens get <em>lighter</em> (forest → 0.80 L) so they remain legible against dark surfaces; neutrals invert. Because components only reference tokens, no component code changes between themes.</div></div>
+</section>
+
+<!-- 03 TYPOGRAPHY -->
+<section id="type">
+  <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title serif">Typography</h2></div>
+  <p class="sec-intro">Two families. <b>Manrope</b> carries the entire interface — its low contrast and open counters stay crisp at small sizes. <b>Fraunces</b> appears sparingly as a display serif for brand and emotional beats. Headings run light (200–300) with tight tracking; UI text sits at 400–500.</p>
+
+  <div class="grid" style="grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px;">
+    <div class="panel"><div style="font-family:'Manrope';font-size:46px;font-weight:200;letter-spacing:-0.02em;line-height:1;">Manrope</div><div class="label-cap" style="margin-top:14px;">UI · 200 / 300 / 400 / 500 / 600 / 700</div><div style="font-family:'Manrope';font-weight:300;margin-top:6px;color:var(--ink-2);">The quick brown fox jumps over 0123456789</div></div>
+    <div class="panel"><div class="serif" style="font-size:46px;font-weight:200;letter-spacing:-0.025em;line-height:1;">Fraunces</div><div class="label-cap" style="margin-top:14px;">Display · 200 / 300 / 400 · optical sizing</div><div class="serif" style="font-weight:300;margin-top:6px;color:var(--ink-2);font-style:italic;">move, meet, repeat — 0123456789</div></div>
+  </div>
+
+  <div class="sub">Type scale</div>
+  <div class="panel" style="padding:8px 24px;">
+    <div class="spec"><div style="font-size:34px;font-weight:200;letter-spacing:-0.02em;line-height:1.12;">Display heading</div><div class="attrs"><b>h1</b> · Manrope 200<br>34&nbsp;px / 1.12 / −0.02em</div></div>
+    <div class="spec"><div style="font-size:24px;font-weight:300;letter-spacing:-0.02em;">Section title</div><div class="attrs"><b>h2</b> · Manrope 300<br>24&nbsp;px / 1.2 / −0.02em</div></div>
+    <div class="spec"><div style="font-size:18px;font-weight:400;letter-spacing:-0.01em;">Card / row title</div><div class="attrs"><b>h3</b> · Manrope 400<br>18&nbsp;px / 1.25 / −0.01em</div></div>
+    <div class="spec"><div style="font-size:14px;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);">Eyebrow label</div><div class="attrs"><b>h4</b> · Manrope 500<br>14&nbsp;px / uppercase / +0.04em / ink-3</div></div>
+    <div class="spec"><div style="font-size:15px;font-weight:400;color:var(--ink-2);line-height:1.5;">Body copy is set at fifteen pixels with a 1.5 line height for comfortable reading inside cards and sheets.</div><div class="attrs"><b>body</b> · Manrope 400<br>15&nbsp;px / 1.5</div></div>
+    <div class="spec"><div class="mono" style="font-size:12px;color:var(--ink-3);letter-spacing:0.02em;">CAPTION · 12·05 · 1.2KM · €8</div><div class="attrs"><b>caption / mono</b><br>SF Mono · 11–12&nbsp;px · metadata, prices, time</div></div>
+  </div>
+</section>
+
+<!-- 04 SPACING -->
+<section id="space">
+  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title serif">Spacing, radius &amp; elevation</h2></div>
+  <p class="sec-intro">Spacing follows a soft 4-pt rhythm; the common steps are 4 / 8 / 12 / 16 / 20 / 24. Radii are generous and consistent by component class. Elevation is expressed mostly through tone and hairlines rather than shadow — shadow is reserved for floating surfaces (sheets, FAB, the phone frame).</p>
+
+  <div class="grid" style="grid-template-columns:1fr 1fr;gap:14px;">
+    <div class="panel">
+      <div class="sub" style="margin:0 0 16px;">Corner radius</div>
+      <div style="display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;">
+        <div style="text-align:center;"><div style="width:64px;height:64px;background:var(--mint);border-radius:7px;"></div><div class="label-cap">7px · pills/tags</div></div>
+        <div style="text-align:center;"><div style="width:64px;height:64px;background:var(--mint);border-radius:14px;"></div><div class="label-cap">14px · inputs</div></div>
+        <div style="text-align:center;"><div style="width:64px;height:64px;background:var(--mint);border-radius:20px;"></div><div class="label-cap">20px · cards</div></div>
+        <div style="text-align:center;"><div style="width:64px;height:64px;background:var(--forest);border-radius:999px;"></div><div class="label-cap">999px · buttons</div></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="sub" style="margin:0 0 16px;">Elevation</div>
+      <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
+        <div style="text-align:center;"><div style="width:78px;height:56px;background:var(--paper);border:0.5px solid var(--hair);border-radius:14px;"></div><div class="label-cap">0 · hairline</div></div>
+        <div style="text-align:center;"><div style="width:78px;height:56px;background:var(--paper);border-radius:14px;box-shadow:0 1px 2px rgba(20,40,30,0.06);"></div><div class="label-cap">1 · card</div></div>
+        <div style="text-align:center;"><div style="width:78px;height:56px;background:var(--paper);border-radius:14px;box-shadow:0 12px 32px rgba(20,40,30,0.16);"></div><div class="label-cap">2 · sheet / FAB</div></div>
+      </div>
+      <p style="font-size:13px;color:var(--ink-3);margin:16px 0 0;">Dividers are <b>0.5px</b> hairlines in <span class="mono">--hair</span>. Avoid 1px grey borders inside content.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 COMPONENTS -->
+<section id="components">
+  <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title serif">Components</h2></div>
+  <p class="sec-intro">The core kit. Each maps to a class or React component in the codebase. Specs below show the live element; metrics in mono are the implementation values.</p>
+
+  <div class="sub" style="margin-top:8px;">Buttons</div>
+  <div class="demo">
+    <button class="btn btn-primary">Get started</button>
+    <button class="btn btn-secondary">Rate</button>
+    <button class="btn btn-ghost">I already have an account</button>
+    <div style="flex-basis:100%;height:0;"></div>
+    <div class="label-cap" style="margin:0;">Primary <span style="color:var(--ink-3)">— forest · paper text · 16/28 pad · hover→pine · :active scale .97</span></div>
+    <div class="label-cap" style="margin:0;">&nbsp;&nbsp;Secondary <span style="color:var(--ink-3)">— mint · forest text · 14/22</span> &nbsp;·&nbsp; Ghost <span style="color:var(--ink-3)">— transparent · ink-2 · 12/18</span></div>
+  </div>
+
+  <div class="grid" style="grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
+    <div>
+      <div class="sub" style="margin:0 0 12px;">Chips</div>
+      <div class="demo" style="padding:24px;">
+        <span class="uchip">Padel</span>
+        <span class="uchip">This week</span>
+        <span class="uchip outline">Any level ▾</span>
+        <span class="uchip outline">&lt; 5km</span>
+      </div>
+      <div class="label-cap">Filled (mint/forest) for sport &amp; active filters · Outline (hairline) for inactive</div>
+    </div>
+    <div>
+      <div class="sub" style="margin:0 0 12px;">Input</div>
+      <div class="demo col" style="padding:24px;gap:10px;">
+        <div class="label-cap" style="margin:0;">Email</div>
+        <div class="uinput">you@email.com</div>
+      </div>
+      <div class="label-cap">paper-2 fill · 0.5px hair-2 · 14px radius · focus→forest edge</div>
+    </div>
+  </div>
+
+  <div class="sub">Card</div>
+  <div class="demo col" style="gap:0;align-items:stretch;">
+    <div class="ucard" style="display:flex;gap:14px;align-items:center;">
+      <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--moss),var(--mint));flex-shrink:0;"></div>
+      <div style="flex:1;">
+        <div class="mono" style="font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:0.04em;">Padel · Intermediate</div>
+        <div style="font-size:17px;font-weight:400;letter-spacing:-0.01em;margin:2px 0 4px;">Padel doubles · friendly</div>
+        <div class="mono" style="font-size:12px;color:var(--ink-3);">Tue 28 · 19:00 &nbsp;·&nbsp; 1.2km</div>
+      </div>
+      <div style="text-align:right;"><div class="mono" style="font-size:12px;color:var(--forest);font-weight:500;">€8</div></div>
+    </div>
+    <div class="label-cap">paper surface · 0.5px hair · 20px radius · 16px pad · meta in mono / ink-3 · single-line with ellipsis</div>
+  </div>
+
+  <div class="sub">Bottom navigation</div>
+  <div class="demo" style="padding:0;overflow:hidden;">
+    <div style="width:100%;display:grid;grid-template-columns:repeat(4,1fr);padding:10px 8px 14px;border-top:0.5px solid var(--hair);background:var(--paper);">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--forest);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span style="font-size:10px;">Home</span></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--ink-3);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5.5-5.5 2 2-5.5z"/></svg><span style="font-size:10px;">Discover</span></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--ink-3);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 15v-3"/><path d="M12 15V8"/><path d="M16 15v-5"/></svg><span style="font-size:10px;">Progress</span></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--ink-3);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span style="font-size:10px;">Profile</span></div>
+    </div>
+  </div>
+  <div class="label-cap">4 tabs · active = forest + 2px stroke icon · inactive = ink-3 + 1.5px · blurred translucent bar · 10px labels</div>
+
+  <div class="note" style="margin-top:22px;"><div>◆</div><div><b>Active-state caveat (fixed).</b> Do not put a CSS <span class="kbd">transition</span> on the nav item's <span class="mono">color</span> when the colour is a <span class="mono">var()</span> token — the transition fails to start on class change and the highlight sticks to the previous tab. Swap colour instantly; animate opacity/transform only.</div></div>
+</section>
+
+<!-- 06 ICONS -->
+<section id="icons">
+  <div class="sec-head"><span class="sec-num">06</span><h2 class="sec-title serif">Iconography</h2></div>
+  <p class="sec-intro">A single line-icon family: 24×24 grid, <b>1.5px</b> stroke, round caps and joins, no fill. Icons inherit <span class="mono">currentColor</span> so they pick up the surrounding text token. Active/emphasis states bump the stroke to 2px rather than changing colour weight. Sport glyphs are custom-drawn in the same style.</p>
+  <div class="demo" style="gap:26px;color:var(--ink);">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5.5-5.5 2 2-5.5z"/></svg>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18M6 12h12M10 19h4"/></svg>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-7.5-7-12a7 7 0 0114 0c0 4.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 119.5 4a6.5 6.5 0 1010.5 10.5z"/></svg>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="11" cy="9" rx="6.5" ry="7"/><path d="M11 16v5"/><path d="M8 21h6"/></svg>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+  </div>
+  <div class="label-cap">home · compass · search · filter · pin · sun · moon · sport (padel) · plus &nbsp;— all 1.5px, currentColor</div>
+</section>
+
+<!-- 07 NAV / CLICK MAP -->
+<section id="nav">
+  <div class="sec-head"><span class="sec-num">07</span><h2 class="sec-title serif">Navigation &amp; click map</h2></div>
+  <p class="sec-intro">The app uses a single <b>history-stack router</b>. Every push records the destination; the back affordance (<span class="kbd">‹</span> or sheet dismiss) pops one entry, so <b>back always returns to wherever you actually came from</b> — not a fixed parent. Tab switches and flow completions <em>reset</em> the stack to a clean root. Each route below is a <span class="mono">route.name</span> in <span class="mono">app.jsx</span>.</p>
+
+  <div class="sub" style="margin-top:8px;">Top-level structure</div>
+  <div class="flow">
+    <div class="flow-row">
+      <div class="node start">Splash <span class="mono">splash</span></div>
+      <div class="arr">→</div>
+      <div class="node">Auth <span class="mono">login · signup</span></div>
+      <div class="arr">→</div>
+      <div class="node">Onboarding quiz <span class="mono">onb_q1…q6</span></div>
+      <div class="arr">→</div>
+      <div class="node tab">Main app <span class="mono">main</span></div>
+    </div>
+    <div class="flow-row" style="margin-top:6px;">
+      <div class="node tab">Home</div>
+      <div class="node tab">Discover</div>
+      <div class="node tab">Progress</div>
+      <div class="node tab">Profile</div>
+      <div class="arr">→</div>
+      <div class="node">+ 20 detail / sheet routes</div>
+    </div>
+  </div>
+
+  <div class="sub">Onboarding &amp; auth flow</div>
+  <table class="maptable">
+    <thead><tr><th>Screen</th><th>Trigger</th><th>Destination</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pill-screen">splash</span></td><td><span class="trigger">Get started</span></td><td><span class="dest">onb_intro</span></td></tr>
+      <tr><td></td><td><span class="trigger">I already have an account</span></td><td><span class="dest">login</span></td></tr>
+      <tr><td></td><td><span class="trigger">Sun / moon · Language</span></td><td><span class="dest" style="color:var(--ink-3)">toggle theme · lang (in place)</span></td></tr>
+      <tr><td><span class="pill-screen">login</span></td><td><span class="trigger">Log in · Continue with Google</span></td><td><span class="dest">main <span class="to">↺ reset</span> home</span></td></tr>
+      <tr><td></td><td><span class="trigger">Forgot password?</span></td><td><span class="dest">forgot_password</span></td></tr>
+      <tr><td></td><td><span class="trigger">Create an account</span></td><td><span class="dest" style="color:var(--ink-3)">← back</span></td></tr>
+      <tr><td><span class="pill-screen">forgot_password</span></td><td><span class="trigger">Send reset link</span></td><td><span class="dest" style="color:var(--ink-3)">→ sent state → back to log in</span></td></tr>
+      <tr><td><span class="pill-screen">onb_intro</span></td><td><span class="trigger">Start the quiz</span></td><td><span class="dest">onb_q1</span></td></tr>
+      <tr><td></td><td><span class="trigger">Explore events first</span></td><td><span class="dest">main <span class="to">↺</span> discover <span style="color:var(--ink-3)">(value before sign-up)</span></span></td></tr>
+      <tr><td><span class="pill-screen">onb_q1 … q5</span></td><td><span class="trigger">Continue / Back</span></td><td><span class="dest">next / previous question <span style="color:var(--ink-3)">(5 steps)</span></span></td></tr>
+      <tr><td><span class="pill-screen">onb_results</span></td><td><span class="trigger">Create account</span></td><td><span class="dest">signup</span></td></tr>
+      <tr><td><span class="pill-screen">signup</span></td><td><span class="trigger">Create account · Google</span></td><td><span class="dest">main <span class="to">↺ reset</span> home</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="sub">Home tab</div>
+  <table class="maptable">
+    <thead><tr><th>Trigger</th><th>Destination</th></tr></thead>
+    <tbody>
+      <tr><td><span class="trigger">Location pill</span></td><td><span class="dest">LocationSheet <span class="to">▴</span> city + radius</span></td></tr>
+      <tr><td><span class="trigger">Bell icon</span></td><td><span class="dest">notifications</span></td></tr>
+      <tr><td><span class="trigger">“How was …?” Rate card</span></td><td><span class="dest">rate_activity</span></td></tr>
+      <tr><td><span class="trigger">+ Add</span></td><td><span class="dest">AddActivitySheet <span class="to">→</span> create_event · discover</span></td></tr>
+      <tr><td><span class="trigger">Today / suggested event card</span></td><td><span class="dest">event_detail</span></td></tr>
+      <tr><td><span class="trigger">Suggested · See all</span></td><td><span class="dest">discover <span class="to">↺</span></span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="sub">Discover tab</div>
+  <table class="maptable">
+    <thead><tr><th>Trigger</th><th>Destination</th></tr></thead>
+    <tbody>
+      <tr><td><span class="trigger">Search field (focus / type)</span></td><td><span class="dest">SearchPanel <span class="to">→</span> recents · popular · live results</span></td></tr>
+      <tr><td><span class="trigger">Filter icon / filter chips</span></td><td><span class="dest">FilterSheet <span class="to">▴</span> sport·when·level·price·distance</span></td></tr>
+      <tr><td><span class="trigger">Browse-by-sport tile</span></td><td><span class="dest" style="color:var(--ink-3)">applies sport filter</span></td></tr>
+      <tr><td><span class="trigger">List / Map toggle</span></td><td><span class="dest" style="color:var(--ink-3)">switches view in place</span></td></tr>
+      <tr><td><span class="trigger">Event card · FAB +</span></td><td><span class="dest">event_detail · create_event</span></td></tr>
+      <tr><td><span class="trigger">City with no events <span style="color:var(--ink-3)">(cold-start)</span></span></td><td><span class="dest">ColdCityState <span class="to">→</span> create_event · change city</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="sub">Progress &amp; Profile tabs</div>
+  <table class="maptable">
+    <thead><tr><th>From</th><th>Trigger</th><th>Destination</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pill-screen">progress</span></td><td><span class="trigger">My training plan</span></td><td><span class="dest">settings_sub (plan)</span></td></tr>
+      <tr><td></td><td><span class="trigger">Activity diary · entry</span></td><td><span class="dest">activity_detail <span class="to">→</span> rate_activity · event_chat · create_event <span style="color:var(--ink-3)">(rebook)</span></span></td></tr>
+      <tr><td></td><td><span class="trigger">Challenges</span></td><td><span class="dest">challenge_detail</span></td></tr>
+      <tr><td><span class="pill-screen">profile</span></td><td><span class="trigger">Gear</span></td><td><span class="dest">settings</span></td></tr>
+      <tr><td></td><td><span class="trigger">Pencil</span></td><td><span class="dest">edit_profile</span></td></tr>
+      <tr><td></td><td><span class="trigger">My events</span></td><td><span class="dest">my_events</span></td></tr>
+      <tr><td></td><td><span class="trigger">Friends / messages</span></td><td><span class="dest">all_friends · social · messages</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="sub">Detail screens (no tab bar) &amp; their exits</div>
+  <table class="maptable">
+    <thead><tr><th>Screen</th><th>Leads to</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pill-screen">event_detail</span></td><td><span class="dest">friend · host_reviews · event_chat · <span style="color:var(--ink-3)">JoinSheet</span></span></td></tr>
+      <tr><td><span class="pill-screen">activity_detail</span></td><td><span class="dest">rate_activity · event_chat <span style="color:var(--ink-3)">(message group)</span> · create_event <span style="color:var(--ink-3)">(play again)</span></span></td></tr>
+      <tr><td><span class="pill-screen">my_events</span></td><td><span class="dest">manage_event · event_detail · rate_activity · create_event</span></td></tr>
+      <tr><td><span class="pill-screen">manage_event</span></td><td><span class="dest">edit_event · attendees · event_chat · event_detail</span></td></tr>
+      <tr><td><span class="pill-screen">attendees</span></td><td><span class="dest">friend</span></td></tr>
+      <tr><td><span class="pill-screen">friend</span></td><td><span class="dest">event_detail · chat · invite_friend</span></td></tr>
+      <tr><td><span class="pill-screen">settings</span></td><td><span class="dest">settings_sub · payment_methods · Appearance toggle · Logout <span class="to">↺</span> splash</span></td></tr>
+      <tr><td><span class="pill-screen">payment_methods</span></td><td><span class="dest">list · set default · remove · <span style="color:var(--ink-3)">add card (inline form)</span></span></td></tr>
+      <tr><td><span class="pill-screen">messages</span></td><td><span class="dest">chat</span></td></tr>
+      <tr><td><span class="pill-screen">notifications</span></td><td><span class="dest">event_detail · friend · challenge_detail</span></td></tr>
+      <tr><td><span class="pill-screen">create_event / edit_event</span></td><td><span class="dest">Publish / Save <span class="to">→</span> back or home</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="note" style="margin-top:24px;"><div>◆</div><div><b>Sheets vs. routes.</b> Modal sheets (Location, Add activity, Filter, Join) are local state on the current screen and slide up from the bottom — they don't push a route and dismiss on backdrop tap. The <b>Join sheet</b> surfaces the verified-host trust row and the payment-method picker (saved cards come from a shared store; “Add a card” expands an inline form). Everything else is a routed screen that pushes onto the history stack.</div></div>
+</section>
+
+<!-- 08 SCREEN GALLERY -->
+<section id="screens">
+  <div class="sec-head"><span class="sec-num">08</span><h2 class="sec-title serif">Screen reference</h2></div>
+  <p class="sec-intro">Real captures from the running prototype (light theme, English), grouped by flow. Each is labelled with its <span class="mono">route.name</span> so it maps directly onto the click map above. All screens also exist in dark theme and Spanish.</p>
+
+  <div class="gal-group">Onboarding &amp; auth <span>entry flow</span></div>
+  <div class="gallery">
+    <div class="shot"><div class="frame"><img src="screenshots/screens/splash.png" alt="Splash"></div><div><div class="cap-t">Splash</div><div class="cap-r">splash</div></div></div>
+    <div class="shot"><div class="frame"><img src="screenshots/screens/login.png" alt="Log in"></div><div><div class="cap-t">Log in</div><div class="cap-r">login</div></div></div>
+    <div class="shot"><div class="frame"><img src="screenshots/screens/onboarding.png" alt="Onboarding quiz"></div><div><div class="cap-t">Onboarding quiz</div><div class="cap-r">onb_q1 … q5 · 5 steps</div></div></div>
+    <div class="shot"><div class="frame"><img src="screenshots/screens/onb-results.png" alt="Match results"></div><div><div class="cap-t">Match results</div><div class="cap-r">onb_results</div></div></div>
+  </div>
+
+  <div class="gal-group">Main tabs <span>bottom navigation</span></div>
+  <div class="gallery">
+    <div class="shot"><div class="frame"><img src="screenshots/screens/home.png" alt="Home"></div><div><div class="cap-t">Home</div><div class="cap-r">main · home</div></div></div>
+    <div class="shot"><div class="frame"><img src="screenshots/screens/discover.png" alt="Discover"></div><div><div class="cap-t">Discover</div><div class="cap-r">main · discover</div></div></div>
+    <div class="shot"><div class="frame"><img src="screenshots/screens/discover-search.png" alt="Discover search"></div><div><div class="cap-t">Search results</div><div class="cap-r">discover · SearchPanel</div></div></div>
+    <div class="shot"><div class="frame"><img src="screenshots/screens/cold-start.png" alt="Cold-start city"></div><div><div class="cap-t">Cold-start city</div><div class="cap-r">discover · ColdCityState</div></div></div>
+    <div class="shot"><div class="frame"><img src="screenshots/screens/progress.png" alt="Progress"></div><div><div class="cap-t">Progress</div><div class="cap-r">main · progress</div></div></div>
+    <div class="shot"><div class="frame"><img src="screenshots/screens/profile.png" alt="Profile"></div><div><div class="cap-t">Profile</div><div class="cap-r">main · profile</div></div></div>
+    <div class="shot"><div class="frame"><img src="screenshots/screens/settings.png" alt="Settings"></div><div><div class="cap-t">Settings · Appearance</div><div class="cap-r">settings</div></div></div>
+  </div>
+
+  <div class="gal-group">Events &amp; activity <span>core loops</span></div>
+  <div class="gallery">
+    <div class="shot"><div class="frame"><img src="screenshots/screens/event-detail.png" alt="Event detail"></div><div><div class="cap-t">Event detail</div><div class="cap-r">event_detail</div></div></div>
+    <div class="shot"><div class="frame"><img src="screenshots/screens/create-event.png" alt="Host an event"></div><div><div class="cap-t">Host / edit event</div><div class="cap-r">create_event · edit_event</div></div></div>
+    <div class="shot"><div class="frame"><img src="screenshots/screens/my-events.png" alt="My events"></div><div><div class="cap-t">My events</div><div class="cap-r">my_events</div></div></div>
+    <div class="shot"><div class="frame"><img src="screenshots/screens/event-chat.png" alt="Event group chat"></div><div><div class="cap-t">Event group chat</div><div class="cap-r">event_chat</div></div></div>
+    <div class="shot"><div class="frame"><img src="screenshots/screens/payment.png" alt="Payment methods"></div><div><div class="cap-t">Payment methods</div><div class="cap-r">payment_methods</div></div></div>
+  </div>
+
+  <div class="gal-group">Social &amp; system <span>people, messaging, alerts</span></div>
+  <div class="gallery">
+    <div class="shot"><div class="frame"><img src="screenshots/screens/friend.png" alt="Friend profile"></div><div><div class="cap-t">Friend profile</div><div class="cap-r">friend</div></div></div>
+    <div class="shot"><div class="frame"><img src="screenshots/screens/messages.png" alt="Messages"></div><div><div class="cap-t">Messages</div><div class="cap-r">messages</div></div></div>
+    <div class="shot"><div class="frame"><img src="screenshots/screens/chat.png" alt="Direct chat"></div><div><div class="cap-t">Direct chat</div><div class="cap-r">chat</div></div></div>
+    <div class="shot"><div class="frame"><img src="screenshots/screens/notifications.png" alt="Notifications"></div><div><div class="cap-t">Notifications</div><div class="cap-r">notifications</div></div></div>
+  </div>
+</section>
+
+<!-- 09 MOTION -->
+<section id="motion">
+  <div class="sec-head"><span class="sec-num">09</span><h2 class="sec-title serif">Motion &amp; interaction</h2></div>
+  <p class="sec-intro">Motion is subtle and functional — it confirms a tap or reveals a surface, never decorates. Durations are short (150–400ms) with an ease-out feel. No infinite or looping animation on content.</p>
+  <table>
+    <thead><tr><th>Pattern</th><th>Spec</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td><span class="trigger">Tap feedback</span></td><td class="mono" style="font-size:12.5px;">transform: scale(0.97–0.98) · 150ms</td><td class="desc">Buttons, tappable rows (<span class="mono">.tap</span>)</td></tr>
+      <tr><td><span class="trigger">Hover tint</span></td><td class="mono" style="font-size:12.5px;">background → mint-2 · 150ms</td><td class="desc">List rows</td></tr>
+      <tr><td><span class="trigger">Sheet enter</span></td><td class="mono" style="font-size:12.5px;">slideUp translateY 100%→0</td><td class="desc">Bottom sheets</td></tr>
+      <tr><td><span class="trigger">Dropdown / toast</span></td><td class="mono" style="font-size:12.5px;">slideDown −30px + fade</td><td class="desc">Inline reveals</td></tr>
+      <tr><td><span class="trigger">Progress fill</span></td><td class="mono" style="font-size:12.5px;">width · 400ms ease</td><td class="desc">Onboarding, streak bars</td></tr>
+      <tr><td><span class="trigger">Skeleton</span></td><td class="mono" style="font-size:12.5px;">shimmer translateX −100→100%</td><td class="desc">Discover loading state</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 10 THEMING & I18N -->
+<section id="theming">
+  <div class="sec-head"><span class="sec-num">10</span><h2 class="sec-title serif">Theming &amp; internationalisation</h2></div>
+  <div class="grid" style="grid-template-columns:1fr 1fr;gap:14px;">
+    <div class="panel">
+      <div class="sub" style="margin:0 0 12px;">Theme</div>
+      <p style="font-size:14.5px;color:var(--ink-2);margin:0 0 10px;">Toggle in <b>Settings → Appearance</b> (and a shortcut on Splash). Selection persists to <span class="kbd">newbie_theme</span> and is applied to <span class="mono">&lt;html&gt;</span> <b>before first paint</b> via an inline head script — no flash on reload.</p>
+      <p style="font-size:14.5px;color:var(--ink-2);margin:0;">Implementation: <span class="mono">ThemeProvider</span> sets <span class="kbd">data-theme="dark"</span>; all colour comes from tokens, so component code is theme-agnostic.</p>
+    </div>
+    <div class="panel">
+      <div class="sub" style="margin:0 0 12px;">Language</div>
+      <p style="font-size:14.5px;color:var(--ink-2);margin:0 0 10px;">Full <b>English &amp; Español</b> via a flat key dictionary in <span class="mono">i18n.jsx</span>. Components call <span class="mono">t('group.key')</span>; never hard-code copy.</p>
+      <p style="font-size:14.5px;color:var(--ink-2);margin:0;">Persists to <span class="kbd">newbie_lang</span>. Interpolation uses <span class="mono">{'{'}email{'}'}</span>-style placeholders. Sport &amp; enum values resolve through <span class="mono">trVal()</span>.</p>
+    </div>
+  </div>
+  <div class="demo" style="margin-top:14px;gap:10px;align-items:stretch;">
+    <div class="pair-dark" style="flex:1;display:flex;flex-direction:column;gap:6px;padding:18px;">
+      <div style="color:oklch(0.96 0.006 150);font-size:15px;font-weight:500;">Dark surface</div>
+      <div style="color:oklch(0.58 0.009 150);font-size:13px;">paper 0.205 · ink 0.96 · forest 0.80</div>
+      <button style="margin-top:8px;align-self:flex-start;background:oklch(0.80 0.135 152);color:oklch(0.205 0.008 158);border:0;border-radius:999px;padding:10px 20px;font-family:inherit;font-weight:500;">Primary</button>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:6px;padding:18px;background:var(--paper);border-radius:14px;border:1px solid var(--hair);">
+      <div style="font-size:15px;font-weight:500;">Light surface</div>
+      <div style="color:var(--ink-3);font-size:13px;">paper 0.987 · ink 0.20 · forest 0.32</div>
+      <button class="btn btn-primary" style="margin-top:8px;align-self:flex-start;padding:10px 20px;font-size:14px;">Primary</button>
+    </div>
+  </div>
+</section>
+
+<!-- 11 ARCHITECTURE -->
+<section id="architecture">
+  <div class="sec-head"><span class="sec-num">11</span><h2 class="sec-title serif">File architecture</h2></div>
+  <p class="sec-intro">The prototype is plain React loaded via Babel — no build step. Tokens and global CSS live in <span class="mono">index.html</span>; screens are split by area. Each file attaches its components to <span class="mono">window</span> so they're shared across the Babel scripts.</p>
+  <table>
+    <thead><tr><th>File</th><th>Responsibility</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tok">index.html</span></td><td class="desc">Design tokens, global CSS, fonts, pre-paint theme script, script order</td></tr>
+      <tr><td><span class="tok">i18n.jsx</span></td><td class="desc">EN/ES dictionary, <span class="mono">useT</span>, <span class="mono">LangProvider</span>, <span class="mono">ThemeProvider</span></td></tr>
+      <tr><td><span class="tok">shared.jsx</span></td><td class="desc">Icons, sport glyphs, Header, BottomNav, mock data, primitives</td></tr>
+      <tr><td><span class="tok">onboarding.jsx</span></td><td class="desc">Splash, Login, Forgot password, quiz Q1–Q6, results, sign-up</td></tr>
+      <tr><td><span class="tok">home.jsx · discover.jsx</span></td><td class="desc">Home &amp; Discover tabs, search, create/edit event, sheets</td></tr>
+      <tr><td><span class="tok">progress.jsx · profile.jsx</span></td><td class="desc">Progress, Profile, Settings + Appearance toggle</td></tr>
+      <tr><td><span class="tok">payments.jsx</span></td><td class="desc">Shared payment-methods store (persisted), management screen, add-card form, card-brand chip</td></tr>
+      <tr><td><span class="tok">extras · features… (1–5)</span></td><td class="desc">Detail screens: events, friends, chat, attendees, reviews, challenges</td></tr>
+      <tr><td><span class="tok">app.jsx</span></td><td class="desc">History-stack router, phone frame, tab shell, all route wiring</td></tr>
+    </tbody>
+  </table>
+  <div class="note" style="margin-top:24px;"><div>◆</div><div><b>For production.</b> Treat tokens as the contract: port the <span class="mono">:root</span> / <span class="kbd">[data-theme]</span> blocks verbatim into your design-token pipeline, keep the route names as your navigation graph, and the rest is component implementation. Mock data in <span class="mono">shared.jsx</span> documents the expected entity shapes (events, hosts, attendees).</div></div>
+</section>
+
+<footer>
+  <div>newbie — Design Specification · v1.0</div>
+  <div>Generated for engineering handoff · June 2026</div>
+</footer>
+</div>

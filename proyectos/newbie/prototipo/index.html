@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>newbie — prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700&family=Fraunces:opsz,wght@9..144,200;9..144,300;9..144,400&display=swap" rel="stylesheet">
+
+<script src="vendor/react.production.min.js"></script>
+<script src="vendor/react-dom.production.min.js"></script>
+
+<style>
+  :root {
+    /* Greens */
+    --forest: oklch(0.32 0.06 150);
+    --pine:   oklch(0.42 0.07 148);
+    --sage:   oklch(0.62 0.08 148);
+    --moss:   oklch(0.78 0.07 145);
+    --mint:   oklch(0.94 0.028 155);
+    --mint-2: oklch(0.97 0.018 155);
+    --mint2:  oklch(0.97 0.018 155);
+    --lime:   oklch(0.86 0.14 132);
+
+    /* Neutrals */
+    --paper:  oklch(0.987 0.004 150);
+    --paper-2:oklch(0.97  0.005 150);
+    --ink:    oklch(0.20 0.015 150);
+    --ink-2:  oklch(0.42 0.012 150);
+    --ink-3:  oklch(0.62 0.010 150);
+    --hair:   oklch(0.90 0.008 150);
+    --hair-2: oklch(0.85 0.010 150);
+
+    /* Misc */
+    --warn:   oklch(0.78 0.13 70);
+    --rose:   oklch(0.72 0.11 25);
+  }
+
+  /* ── Dark theme ── redefine the palette; components read these vars */
+  [data-theme="dark"] {
+    --forest: oklch(0.80 0.135 152);
+    --pine:   oklch(0.72 0.125 150);
+    --sage:   oklch(0.64 0.09 148);
+    --moss:   oklch(0.52 0.07 145);
+    --mint:   oklch(0.33 0.045 158);
+    --mint-2: oklch(0.27 0.03 158);
+    --mint2:  oklch(0.27 0.03 158);
+    --lime:   oklch(0.86 0.16 132);
+
+    --paper:  oklch(0.205 0.008 158);
+    --paper-2:oklch(0.255 0.009 158);
+    --ink:    oklch(0.96 0.006 150);
+    --ink-2:  oklch(0.76 0.008 150);
+    --ink-3:  oklch(0.58 0.009 150);
+    --hair:   oklch(0.31 0.008 150);
+    --hair-2: oklch(0.40 0.010 150);
+
+    --warn:   oklch(0.80 0.13 70);
+    --rose:   oklch(0.72 0.12 25);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+    background: oklch(0.95 0.01 150);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px 20px;
+    background:
+      radial-gradient(1200px 600px at 50% 0%, oklch(0.93 0.04 150) 0%, transparent 60%),
+      oklch(0.95 0.01 150);
+  }
+  [data-theme="dark"] body {
+    background:
+      radial-gradient(1200px 600px at 50% 0%, oklch(0.26 0.03 155) 0%, transparent 60%),
+      oklch(0.13 0.006 155);
+  }
+
+  /* The phone "screen" area */
+  .screen {
+    position: absolute; inset: 0;
+    background: var(--paper);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    font-family: 'Manrope', sans-serif;
+    color: var(--ink);
+  }
+
+  .screen-scroll {
+    flex: 1; overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .screen-scroll::-webkit-scrollbar { display: none; }
+
+  /* utility */
+  .hairline { border-top: 0.5px solid var(--hair); }
+  .hairline-b { border-bottom: 0.5px solid var(--hair); }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px;
+    border: none; cursor: pointer;
+    font-family: inherit; font-weight: 400;
+    border-radius: 999px;
+    transition: transform 0.15s ease, background 0.2s ease, opacity 0.2s ease;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary {
+    background: var(--forest); color: var(--paper);
+    padding: 16px 28px; font-size: 16px; letter-spacing: -0.01em;
+  }
+  .btn-primary:hover { background: var(--pine); }
+  .btn-secondary {
+    background: var(--mint); color: var(--forest);
+    padding: 14px 22px; font-size: 15px;
+  }
+  .btn-ghost {
+    background: transparent; color: var(--ink-2);
+    padding: 12px 18px; font-size: 14px;
+  }
+
+  /* Headings */
+  h1, h2, h3, h4 { margin: 0; font-weight: 300; letter-spacing: -0.02em; }
+  h1 { font-size: 34px; line-height: 1.12; font-weight: 200; }
+  h2 { font-size: 24px; line-height: 1.2; font-weight: 300; }
+  h3 { font-size: 18px; line-height: 1.25; font-weight: 400; letter-spacing: -0.01em; }
+  h4 { font-size: 14px; line-height: 1.25; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3); }
+  p { margin: 0; line-height: 1.5; }
+
+  .mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .serif { font-family: 'Fraunces', serif; }
+
+  /* Chip */
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px; border-radius: 999px;
+    background: var(--mint); color: var(--forest);
+    font-size: 12px; font-weight: 400;
+    border: 0.5px solid transparent;
+  }
+  .chip-outline {
+    background: transparent;
+    border: 0.5px solid var(--hair-2);
+    color: var(--ink-2);
+  }
+
+  /* Card */
+  .card {
+    background: var(--paper);
+    border: 0.5px solid var(--hair);
+    border-radius: 20px;
+    padding: 16px;
+  }
+
+  /* Input */
+  .input {
+    width: 100%;
+    background: var(--paper-2);
+    border: 0.5px solid var(--hair-2);
+    border-radius: 14px;
+    padding: 14px 16px;
+    font-family: inherit; font-size: 15px;
+    color: var(--ink);
+    outline: none;
+    transition: border 0.2s ease;
+  }
+  .input:focus { border-color: var(--forest); background: var(--paper); }
+
+  /* Bottom nav */
+  [data-theme="dark"] .bottom-nav {
+    background: oklch(0.205 0.008 158 / 0.86);
+  }
+  [data-theme="dark"] .placeholder {
+    background-color: oklch(0.27 0.02 150);
+    background-image:
+      linear-gradient(135deg,
+        oklch(0.34 0.03 150) 25%, transparent 25%,
+        transparent 50%, oklch(0.34 0.03 150) 50%,
+        oklch(0.34 0.03 150) 75%, transparent 75%);
+    color: oklch(0.72 0.03 150);
+  }
+  .bottom-nav {
+    flex-shrink: 0;
+    background: oklch(0.99 0.003 150 / 0.92);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-top: 0.5px solid var(--hair);
+    padding: 8px 8px 26px;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+  }
+  .nav-item {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px; padding: 8px 4px; cursor: pointer;
+    color: var(--ink-3);
+    font-size: 10px; font-weight: 400; letter-spacing: 0.02em;
+  }
+  .nav-item svg, .nav-item span { transition: opacity 0.15s ease; }
+  .nav-item.active { color: var(--forest); }
+  .nav-item:hover { color: var(--pine); }
+
+  /* Progress bar */
+  .pbar {
+    height: 4px; background: var(--hair); border-radius: 99px; overflow: hidden;
+  }
+  .pbar > div {
+    height: 100%; background: var(--forest); border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+
+  /* Subtle tap feedback */
+  .tap { cursor: pointer; transition: background 0.15s ease, transform 0.15s ease; }
+  .tap:hover { background: var(--mint-2); }
+  .tap:active { transform: scale(0.98); }
+
+  /* image placeholder pattern */
+  .placeholder {
+    background-image:
+      linear-gradient(135deg,
+        oklch(0.88 0.04 150) 25%, transparent 25%,
+        transparent 50%, oklch(0.88 0.04 150) 50%,
+        oklch(0.88 0.04 150) 75%, transparent 75%);
+    background-size: 14px 14px;
+    background-color: oklch(0.93 0.025 150);
+    color: oklch(0.4 0.04 150);
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+  }
+
+  /* Sheet animations */
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+  @keyframes slideDown {
+    from { transform: translateY(-30px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes shimmer {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(100%); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+</style>
+<script>
+  // Apply persisted theme before first paint to avoid a flash
+  (function () {
+    try {
+      var th = localStorage.getItem('newbie_theme');
+      if (th === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+<a id="pf-back" href="../newbie.html" style="position:fixed;top:14px;left:14px;z-index:9999;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:#221C17;color:#fff;font:600 14px/1 system-ui,sans-serif;text-decoration:none;box-shadow:0 6px 18px -8px rgba(0,0,0,.4)" onclick="if(history.length>1){history.back();return false}">← Volver al caso · Back</a>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" rx="22" fill="#1f3d2e"/>
+    <circle cx="50" cy="38" r="13" fill="none" stroke="#cdeecf" stroke-width="4"/>
+    <path d="M30 74c0-13 9-20 20-20s20 7 20 20" fill="none" stroke="#cdeecf" stroke-width="4" stroke-linecap="round"/>
+  </svg>
+</template>
+<div id="root"></div>
+
+<script src="i18n.js"></script>
+<script src="shared.js"></script>
+<script src="onboarding.js"></script>
+<script src="home.js"></script>
+<script src="discover.js"></script>
+<script src="progress.js"></script>
+<script src="profile.js"></script>
+<script src="payments.js"></script>
+<script src="extras.js"></script>
+<script src="features.js"></script>
+<script src="features2.js"></script>
+<script src="features3.js"></script>
+<script src="features4.js"></script>
+<script src="features5.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
