@@ -216,8 +216,8 @@ h2.mini{font-size:.95rem;font-weight:600;color:var(--muted);letter-spacing:0;mar
 .source{font-size:.85rem;color:var(--muted)}
 
 /* Galería de pantallas: tira horizontal con scroll */
-.strip{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:8px 2px 18px;margin-top:20px;scrollbar-width:thin}
-.strip figure{flex:0 0 clamp(170px,26vw,210px);scroll-snap-align:start}
+.strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:16px;padding:8px 0 18px;margin-top:20px}
+.strip figure{min-width:0}
 .shot-btn{display:block;width:100%;padding:0;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:var(--surface);cursor:zoom-in;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
 .shot-btn:hover{transform:translateY(-4px);box-shadow:0 16px 30px -18px rgba(60,30,15,.45)}
 .shot-btn img{width:100%;height:auto}
@@ -406,7 +406,7 @@ dialog.lb[open]{animation:rise .3s cubic-bezier(.2,.8,.2,1)}
 .screens-tabs button{border:0;background:transparent;font:inherit;font-size:.92rem;font-weight:500;color:var(--muted);padding:7px 16px;border-radius:999px;cursor:pointer;transition:background .2s,color .2s}
 .screens-tabs button span{font-size:.8rem;opacity:.7;margin-left:4px}
 .screens-tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
-.screens-strip figure{flex:0 0 clamp(200px,24vw,260px)}
+.screens-strip{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
 .screens-strip .shot-btn{aspect-ratio:390/780;border-radius:20px}
 .screens-strip .shot-btn img{width:100%;height:100%;object-fit:cover;object-position:top}
 .screens-strip figcaption b{color:var(--accent);font-weight:600;margin-right:4px}

@@ -71,9 +71,9 @@
       scale: 1, ease: 'none', scrollTrigger: {trigger: img, start: 'top bottom', end: 'center center', scrub: true}
     }));
 
-    // --- Galerías de pantallas: se deslizan en horizontal con el dedo o el trackpad; aquí solo entran al llegar ---
+    // --- Rejillas de pantallas: entran escalonadas al llegar ---
     $$('.strip').forEach(strip => gsap.from(strip.querySelectorAll('figure'), {
-      x: 80, autoAlpha: 0, duration: .9, ease: 'power3.out', stagger: .06,
+      y: 40, autoAlpha: 0, duration: .8, ease: 'power3.out', stagger: .04,
       scrollTrigger: {trigger: strip.closest('.screens') || strip, start: 'top 85%', once: true}
     }));
 
