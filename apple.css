@@ -191,6 +191,5 @@ html.ap-on .ap-r{visibility:hidden}
 .jump{top:52px}
 html.cs-on .cs-w{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .02em .1em;margin:0 -.02em -.1em}
 html.cs-on .cs-w > span{display:inline-block}
-html.cs-on .strip.cs-pinned{scroll-snap-type:none;overflow-x:hidden;scrollbar-width:none}
 html.cs-on .case-banner{will-change:clip-path}
 .strip[hidden]{display:none}

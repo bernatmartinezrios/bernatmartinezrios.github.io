@@ -71,44 +71,11 @@
       scale: 1, ease: 'none', scrollTrigger: {trigger: img, start: 'top bottom', end: 'center center', scrub: true}
     }));
 
-    // --- Galerías de pantallas: en escritorio se fijan y avanzan en horizontal ---
-    const galleries = [];
-    const buildGallery = strip => {
-      const pinEl = strip.closest('.screens') || strip;
-      const dist = () => Math.max(0, strip.scrollWidth - strip.clientWidth);
-      if (!desktop || dist() < 40) {
-        gsap.from(strip.querySelectorAll('figure'), {x: 80, autoAlpha: 0, duration: .9, ease: 'power3.out', stagger: .06,
-          scrollTrigger: {trigger: strip, start: 'top 88%', once: true}});
-        return null;
-      }
-      strip.classList.add('cs-pinned');
-      const tw = gsap.fromTo(strip, {scrollLeft: 0}, {
-        scrollLeft: dist, ease: 'none',
-        scrollTrigger: {trigger: pinEl, pin: true, start: 'center center', end: () => '+=' + dist() * 1.1, scrub: .6, invalidateOnRefresh: true, anticipatePin: 1}
-      });
-      gsap.from(strip.querySelectorAll('figure'), {x: 120, autoAlpha: 0, duration: 1, ease: 'power3.out', stagger: .05,
-        scrollTrigger: {trigger: pinEl, start: 'top 85%', once: true}});
-      return tw;
-    };
-    $$('.strip').filter(s => !s.hidden).forEach(s => galleries.push(buildGallery(s)));
-
-    // Al cambiar de pestaña, la galería fijada pasa a ser la de la pestaña nueva
-    const onTab = e => {
-      const tab = e.target.closest('[role="tab"]');
-      if (!tab) return;
-      requestAnimationFrame(() => {
-        const box = tab.closest('.screens');
-        const visible = box && box.querySelector('.strip:not([hidden])');
-        if (!visible) return;
-        galleries.forEach((g, i) => {
-          if (g && g.scrollTrigger && g.scrollTrigger.trigger === box) { g.scrollTrigger.kill(true); g.kill(); galleries[i] = null; }
-        });
-        $$('.strip', box).forEach(s => { s.classList.remove('cs-pinned'); s.scrollLeft = 0; });
-        galleries.push(buildGallery(visible));
-        ScrollTrigger.refresh();
-      });
-    };
-    document.addEventListener('click', onTab);
+    // --- Galerías de pantallas: se deslizan en horizontal con el dedo o el trackpad; aquí solo entran al llegar ---
+    $$('.strip').forEach(strip => gsap.from(strip.querySelectorAll('figure'), {
+      x: 80, autoAlpha: 0, duration: .9, ease: 'power3.out', stagger: .06,
+      scrollTrigger: {trigger: strip.closest('.screens') || strip, start: 'top 85%', once: true}
+    }));
 
     // --- Cifras que cuentan hasta su valor -----------------------------------
     $$('.numbers strong').forEach(st => {
@@ -138,7 +105,7 @@
       scrollTrigger: {trigger: band, start: 'top bottom', end: 'top 55%', scrub: true}});
 
     ScrollTrigger.refresh();
-    return () => { root.classList.remove('cs-on'); document.removeEventListener('click', onTab); $$('.strip').forEach(s => s.classList.remove('cs-pinned')); };
+    return () => root.classList.remove('cs-on');
   });
   addEventListener('load', () => ScrollTrigger.refresh());
 })();
