@@ -445,3 +445,5 @@ dialog.lb.single .lb-nav{display:none}
 @media (max-width:620px){.topnav a.pill{display:none}.brandname{font-size:.95rem}}
 
 .strip[hidden]{display:none}
+
+@media (max-width:600px){.strip,.screens-strip{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.strip figcaption{font-size:.78rem}}
