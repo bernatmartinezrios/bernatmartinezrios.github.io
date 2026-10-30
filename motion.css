@@ -1,0 +1,92 @@
+/* ===== Capa de movimiento (versión motion graphics) =====
+   Todo va bajo html.m-on, que solo se activa con JS y sin prefers-reduced-motion. */
+:root{--ease:cubic-bezier(.16,1,.3,1);--ease-io:cubic-bezier(.76,0,.24,1)}
+
+/* Barra de progreso de lectura */
+.m-progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:60;background:var(--accent);transform-origin:0 50%;transform:scaleX(var(--p,0));pointer-events:none}
+
+/* Cinta de disciplinas */
+.marquee{position:relative;z-index:1;margin-top:clamp(40px,6vw,72px);border-block:1px solid var(--line);overflow:hidden;padding:18px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee .track{display:flex;width:max-content;gap:0;will-change:transform}
+.marquee .set{display:flex;align-items:center;flex:none}
+.marquee span{font-size:clamp(1.6rem,4vw,3rem);font-weight:600;letter-spacing:-.045em;line-height:1;white-space:nowrap;padding:0 .45em}
+.marquee span.o{color:transparent;-webkit-text-stroke:1.2px var(--ink)}
+.marquee i{flex:none;width:.42em;height:.42em;font-size:clamp(1.6rem,4vw,3rem);border-radius:50%;background:var(--accent)}
+html:not(.m-on) .marquee .set + .set{display:none}
+html:not(.m-on) .marquee .track{flex-wrap:wrap;width:auto;justify-content:center}
+
+/* Cursor «Ver caso» sobre las tarjetas de proyecto */
+.m-cursor{position:fixed;left:0;top:0;z-index:50;pointer-events:none;width:96px;height:96px;margin:-48px 0 0 -48px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:var(--bg);font-size:.82rem;font-weight:600;letter-spacing:.01em;text-align:center;line-height:1.15;scale:0;transition:scale .45s var(--ease)}
+.m-cursor.on{scale:1}
+
+@media (prefers-reduced-motion:no-preference){
+  /* Transición entre páginas (navegadores con View Transitions) */
+  @view-transition{navigation:auto}
+  ::view-transition-old(root){animation:m-vt-out .5s var(--ease-io) both}
+  ::view-transition-new(root){animation:m-vt-in .7s var(--ease) both}
+  @keyframes m-vt-out{to{opacity:0;transform:translateY(-40px) scale(.98)}}
+  @keyframes m-vt-in{from{opacity:0;transform:translateY(60px)}}
+
+  /* Las animaciones CSS de la versión original se sustituyen por las de aquí */
+  html.m-on .name-card > *, html.m-on .case-banner .phone{animation:none}
+
+  /* Cortina de entrada (solo la primera vez en la sesión) */
+  .m-intro{position:fixed;inset:0;z-index:100;background:var(--ink);color:var(--bg);display:grid;place-items:center;clip-path:inset(0 0 0 0);transition:clip-path .9s var(--ease-io)}
+  .m-intro.out{clip-path:inset(0 0 100% 0)}
+  .m-intro p{font-size:clamp(2rem,7vw,5.5rem);font-weight:600;letter-spacing:-.055em;line-height:1;display:flex;flex-wrap:wrap;justify-content:center;gap:0 .25em;padding:0 16px;text-align:center}
+  .m-intro .count{position:absolute;right:clamp(16px,4vw,48px);bottom:clamp(16px,4vw,40px);font-size:.9rem;font-weight:500;font-variant-numeric:tabular-nums;opacity:.6}
+  .m-intro .bar{position:absolute;left:0;bottom:0;height:3px;background:var(--accent);width:calc(var(--n,0) * 1%)}
+
+  /* Tipografía cinética: palabras y letras que suben desde una máscara */
+  html.m-on .k-word{display:inline-block;overflow:hidden;vertical-align:top;padding:.08em .02em .14em;margin:-.08em -.02em -.14em;white-space:nowrap}
+  html.m-on .k-char{display:inline-block;transform:translateY(115%) rotate(6deg);transform-origin:0 100%;transition:transform 1s var(--ease),font-variation-settings .35s var(--ease);transition-delay:calc(var(--i,0) * 28ms + var(--d,0ms))}
+  html.m-on .k-in .k-char{transform:none}
+  html.m-on .k-words .k-w{display:inline-block;transform:translateY(110%);transition:transform .9s var(--ease);transition-delay:calc(var(--i,0) * 60ms + var(--d,0ms))}
+  html.m-on .k-words.k-in .k-w{transform:none}
+  html.m-on h1.name .k-char, html.m-on .case-hero h1 .k-char{font-variation-settings:"wght" var(--w,600)}
+
+  /* Aparición al hacer scroll */
+  html.m-on [data-r]{opacity:0;transform:translateY(42px);transition:opacity .9s var(--ease),transform 1.1s var(--ease);transition-delay:var(--d,0ms)}
+  html.m-on [data-r="clip"]{opacity:1;transform:none;clip-path:inset(100% 0 0 0 round 24px);transition:clip-path 1.2s var(--ease-io);transition-delay:var(--d,0ms)}
+  html.m-on [data-r="clip"] > img{scale:1.25;transition:scale 1.6s var(--ease);transition-delay:var(--d,0ms)}
+  html.m-on [data-r="scale"]{transform:scale(.9);transform-origin:50% 100%}
+  html.m-on [data-r="pop"]{transform:translateY(14px) scale(.85)}
+  html.m-on [data-r="side"]{transform:translateX(80px)}
+  html.m-on [data-r="line"]{opacity:1;transform:none;background:linear-gradient(var(--line),var(--line)) 0 0/0 1px no-repeat;border-top-color:transparent!important;transition:background-size 1.2s var(--ease-io);transition-delay:var(--d,0ms)}
+  html.m-on [data-r="line"] > *{opacity:0;transform:translateY(12px);transition:opacity .7s var(--ease),transform .9s var(--ease);transition-delay:calc(var(--d,0ms) + 250ms)}
+  html.m-on .r-in[data-r]{opacity:1;transform:none}
+  html.m-on .r-in[data-r="clip"]{clip-path:inset(0 0 0 0 round 24px)}
+  html.m-on .r-in[data-r="clip"] > img{scale:1}
+  html.m-on .r-in[data-r="line"]{background-size:100% 1px}
+  html.m-on .r-in[data-r="line"] > *{opacity:1;transform:none}
+
+  /* Parallax de los móviles: usa translate para no pisar los transform/rotate originales */
+  html.m-on .proj-visual .phone{translate:0 var(--py,0px)}
+  html.m-on .case-banner .phone{translate:0 var(--py,0px)}
+  html.m-on .case-banner .c2{translate:-50% var(--py,0px)}
+  html.m-on .case-banner .phone{opacity:0;scale:.8;transition:opacity .8s var(--ease),scale 1.1s var(--ease);transition-delay:var(--d,0ms)}
+  html.m-on .case-banner.r-on .phone{opacity:1;scale:1}
+  html.m-on .proj-visual{background-size:140% 140%;background-position:var(--bx,50%) 50%}
+
+  /* Botones magnéticos */
+  html.m-on .btn, html.m-on .pill, html.m-on .photo-pill{translate:var(--mx,0px) var(--my,0px);transition:transform .2s,background .2s,translate .5s var(--ease)}
+
+  /* Bloque de contacto que se expande al llegar */
+  html.m-on .contact-band{transform:scale(var(--cs,1));transform-origin:50% 100%;border-radius:calc(32px + (1 - var(--cs,1)) * 200px)}
+  html.m-on .contact-band .mail{background:linear-gradient(var(--accent),var(--accent)) 0 100%/0 2px no-repeat;border-bottom-color:transparent;transition:background-size .5s var(--ease)}
+  html.m-on .contact-band .mail:hover, html.m-on .contact-band.r-in .mail{background-size:100% 2px}
+
+  /* Enlaces del menú con texto que rueda */
+  html.m-on .topnav a:not(.lang){overflow:hidden}
+  html.m-on .topnav a .roll{display:inline-grid;vertical-align:top}
+  html.m-on .topnav a .roll > span{grid-area:1/1;transition:transform .45s var(--ease)}
+  html.m-on .topnav a .roll > span + span{transform:translateY(110%)}
+  html.m-on .topnav a:hover .roll > span:first-child{transform:translateY(-110%)}
+  html.m-on .topnav a:hover .roll > span + span{transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .m-cursor,.m-intro{display:none}
+  .marquee .set + .set{display:none}
+  .marquee .track{flex-wrap:wrap;width:auto;justify-content:center;transform:none!important}
+}
+@media (max-width:620px){.marquee{padding:12px 0}}

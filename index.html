@@ -13,13 +13,12 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
 <link rel="alternate" hreflang="en" href="en/index.html">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="apple.css">
 </head>
-<body>
-<div class="spot" aria-hidden="true"></div>
-
+<body class="ap-body">
 <header class="topbar">
   <div class="wrap">
     <a class="brandname" href="#top">Bernat Martínez Ríos</a>
@@ -45,173 +44,60 @@
     </nav>
 </header>
 
-<main class="home bento" id="top">
-  <div class="wrap">
-
-    <section class="intro-row" aria-label="Bernat Martínez Ríos">
-      <div class="card name-card">
-        <p class="role">Diseñador UX/UI y de producto · Barcelona</p>
-        <h1 class="name">Bernat<br>Martínez Ríos</h1>
-        <p class="intro">Diseño productos digitales, de la idea a una app que funciona, apoyándome en herramientas de IA como Claude.</p>
-        <div class="ctas">
-          <a class="btn" href="#proyectos">Ver proyectos</a>
-          <a class="btn ghost" href="#contacto">Escríbeme</a>
-        </div>
+<main class="ap" id="top">
+  <section class="ap-hero" data-hero>
+    <div class="ap-hero-sticky">
+      <div class="ap-hero-copy">
+        <p class="ap-eyebrow">Diseñador UX/UI y de producto · Barcelona</p>
+        <h1 class="ap-title">Bernat Martínez Ríos.</h1>
+        <p class="ap-sub">Diseño productos digitales, de la idea a una app que funciona, apoyándome en herramientas de IA como Claude.</p>
+        <p class="ap-links"><a class="ap-btn" href="#proyectos">Ver proyectos</a><a href="#contacto">Escríbeme <span aria-hidden="true">›</span></a></p>
       </div>
-      <figure class="card photo-card">
-        <img src="bernat.jpg" alt="Bernat Martínez Ríos" width="700" height="906">
+      <div class="ap-hero-next" id="proyectos"><h2 class="ap-h2">Proyectos.</h2><p class="ap-lead">Dos productos propios, diseñados y construidos de principio a fin.</p></div>
+      <div class="ap-hero-phones">
+        <div class="ap-hc l"><p class="ap-hc-status">MVP terminado</p><h2 class="ap-hc-name">Tu llavero</h2><p class="ap-hc-desc">El expediente compartido de un piso de alquiler, del acta de entrada a la devolución de la fianza.</p><p class="ap-hc-links"><a href="proyectos/tu-llavero.html">Ver el caso <span aria-hidden="true">›</span></a><a href="proyectos/tu-llavero/demo/index.html">Probar la demo <span aria-hidden="true">›</span></a></p></div>
+        <div class="ap-hero-devs" aria-hidden="true">
+          <figure class="ap-dev"><div class="ap-dev-frame"><div class="ap-dev-screen" style="--sb:#FBF8F2"><div class="ap-dev-sb"><span class="sb-time">9:41</span><span class="sb-island"></span><svg class="sb-icons" viewBox="0 0 40 12" aria-hidden="true"><g fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/><rect x="22.5" y="1" width="15" height="10" rx="3" fill="none" stroke="currentColor" opacity=".45"/><rect x="24.5" y="3" width="11" height="6" rx="1.5"/><rect x="38.5" y="4" width="1.5" height="4" rx=".75" opacity=".45"/></g></svg></div><img src="proyectos/tu-llavero/img/capturas/04-expediente.webp" alt=""></div></div><figcaption>Tu llavero</figcaption></figure>
+          <figure class="ap-dev"><div class="ap-dev-frame"><div class="ap-dev-screen" style="--sb:#FAFCF9"><div class="ap-dev-sb"><span class="sb-time">9:41</span><span class="sb-island"></span><svg class="sb-icons" viewBox="0 0 40 12" aria-hidden="true"><g fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/><rect x="22.5" y="1" width="15" height="10" rx="3" fill="none" stroke="currentColor" opacity=".45"/><rect x="24.5" y="3" width="11" height="6" rx="1.5"/><rect x="38.5" y="4" width="1.5" height="4" rx=".75" opacity=".45"/></g></svg></div><img src="proyectos/newbie/img/hero-home.webp" alt=""></div></div><figcaption>newbie</figcaption></figure>
+        </div>
+        <div class="ap-hc r"><p class="ap-hc-status">En desarrollo</p><h2 class="ap-hc-name">newbie</h2><p class="ap-hc-desc">Deporte en compañía, a tu nivel: descubrir una actividad cercana, apuntarse y conocer a quien va.</p><p class="ap-hc-links"><a href="proyectos/newbie.html">Ver el caso <span aria-hidden="true">›</span></a><a href="proyectos/newbie/prototipo/index.html">Abrir el prototipo <span aria-hidden="true">›</span></a></p></div>
+        <p class="ap-hero-note">Capturas con datos de ejemplo.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="ap-now" aria-label="Ahora mismo">
+    <p class="ap-eyebrow ap-r">Ahora mismo</p>
+    <p class="ap-reveal" data-words><span>Construyendo</span> <span>Tu</span> <span>llavero</span> <span>y</span> <span>newbie</span> <span>con</span> <span>Claude</span> <span>Design</span> <span>y</span> <span>Claude</span> <span>Code.</span> <span>Coordinando</span> <span>la</span> <span>formación</span> <span>en</span> <span>QSTAR</span> <span>ROV</span> <span>Training</span> <span>Centre,</span> <span>en</span> <span>Barcelona.</span> <span>Estudiando</span> <span>el</span> <span>grado</span> <span>en</span> <span>Marketing</span> <span>e</span> <span>Investigación</span> <span>de</span> <span>Mercados</span> <span>en</span> <span>la</span> <span>UOC.</span></p>
+  </section>
+
+  <section class="ap-about" id="sobre-mi">
+    <h2 class="ap-h2 ap-r">Sobre mí.</h2>
+    <div class="ap-grid">
+      <figure class="ap-tile photo ap-r">
+        <img src="bernat.jpg" alt="Bernat Martínez Ríos" width="700" height="906" loading="lazy">
         <a class="photo-pill" href="CV_Bernat_Martinez_Rios_ES.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14"/></svg>Descargar CV</a>
       </figure>
-      <div class="side-col">
-        <div class="card now-card tint-sand">
-          <h2 class="label">Ahora mismo</h2>
-          <ul class="now">
-            <li>Construyendo Tu llavero y newbie con Claude Design y Claude Code.</li>
-            <li>Coordinando la formación en QSTAR ROV Training Centre, en Barcelona.</li>
-            <li>Estudiando el grado en Marketing e Investigación de Mercados en la UOC.</li>
-          </ul>
-        </div>
-        <div class="card niche-card">
-          <h2 class="label">Mi nicho</h2>
-          <ul class="niche"><li>UX/UI</li><li>Producto digital</li><li>Apps móviles</li><li>Sistemas de diseño</li><li>Marca</li><li>Herramientas de IA</li></ul>
-        </div>
-      </div>
-    </section>
+      <div class="ap-tile text ap-r"><p>Llevo más de 5 años viendo a personas usar (y atascarse con) herramientas digitales. Hoy administro la plataforma de formación (LMS) y el ciclo completo del alumno en un centro internacional de formación ROV.</p><p>Antes llevé CRM, atención al cliente y marketing. Ese día a día me enseñó a detectar dónde se rompe un proceso para quien lo usa, y a arreglarlo. Me formé en diseño UX/UI y lo aplico a productos propios como Tu llavero y newbie.</p></div>
+      <div class="ap-tile ap-r"><h3 class="ap-label">Trayectoria</h3><ol class="path"><li><div><strong>ROV Training Coordinator & LMS Administrator</strong><br><span>QSTAR ROV Training Centre & Subsea Solutions</span></div><time>2025 – hoy</time></li><li><div><strong>Administrativo</strong><br><span>Barcelona Serveis Municipals: Bicing i Endolla y Port Olímpic</span></div><time>2024 – 2025</time></li><li><div><strong>Responsable de Marketing y Administración</strong><br><span>HG Gestió Grup</span></div><time>2019 – 2023</time></li></ol></div>
+      <div class="ap-tile ap-r"><h3 class="ap-label">Formación</h3><ol class="path"><li><div><strong>Grado en Marketing e Investigación de Mercados</strong><br><span>UOC</span></div><time>En curso</time></li><li><div><strong>Máster en Diseño UX/UI</strong><br><span>Nuclio Digital School</span></div><time>2023</time></li><li><div><strong>CFGS Marketing Digital y Publicidad</strong><br><span>ESN Sant Cugat</span></div><time>2017 – 2019</time></li></ol></div>
+      <div class="ap-tile wide ap-r"><h3 class="ap-label">Herramientas</h3><div class="tool-cols"><div><h4>Diseño y digital</h4><ul class="chips"><li>Claude IA (Claude Design y Claude Code)</li><li>Figma</li><li>UX/UI y prototipado</li><li>Gestión web</li><li>Redes sociales</li></ul></div><div><h4>Datos y ofimática</h4><ul class="chips"><li>Power BI</li><li>SharePoint</li><li>Google Workspace</li><li>Microsoft 365</li></ul></div><div><h4>Gestión y formación</h4><ul class="chips"><li>Moodle (LMS)</li><li>HabitatSoft</li><li>Holded</li></ul></div></div></div>
+      <div class="ap-tile wide ap-r"><h3 class="ap-label">Mi nicho</h3><ul class="niche"><li>UX/UI</li><li>Producto digital</li><li>Apps móviles</li><li>Sistemas de diseño</li><li>Marca</li><li>Herramientas de IA</li></ul>
+        <h3 class="ap-label" style="margin-top:28px">Idiomas</h3><p class="langs-line">Catalán y español nativos · inglés C1, de uso profesional diario</p></div>
+    </div>
+  </section>
 
-    <section class="row" id="proyectos">
-      <div class="card label-card tint-mint">
-        <h2>Proyectos</h2>
-        <p>Dos productos propios, diseñados y construidos de principio a fin.</p>
-      </div>
-      <div class="rail" aria-hidden="true"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg></span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></span></div>
-      <div class="row-body projects">
-        <article class="card proj">
-          <div class="proj-head">
-            <div>
-              <h3><a href="proyectos/tu-llavero.html">Tu llavero</a></h3>
-              <p class="desc">El expediente compartido de un piso de alquiler, del acta de entrada a la devolución de la fianza.</p>
-            </div>
-            <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
-          </div>
-          <p class="cap"><span class="status">MVP terminado</span>2026 · Producto · UX/UI · Marca</p>
-          <div class="proj-visual v-llavero" aria-hidden="true">
-            <div class="phone framed a"><img src="proyectos/tu-llavero/img/capturas/05-acta.webp" alt="" loading="lazy"></div>
-            <div class="phone framed b"><img src="proyectos/tu-llavero/img/capturas/04-expediente.webp" alt="" loading="lazy"></div>
-          </div>
-          <span class="sr-only">Ver caso de estudio</span>
-        </article>
-        <article class="card proj">
-          <div class="proj-head">
-            <div>
-              <h3><a href="proyectos/newbie.html">newbie</a></h3>
-              <p class="desc">Deporte en compañía, a tu nivel: descubrir una actividad cercana, apuntarse y conocer a quien va.</p>
-            </div>
-            <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
-          </div>
-          <p class="cap"><span class="status">En desarrollo</span>2026 · UX/UI · Producto · App móvil</p>
-          <div class="proj-visual v-newbie" aria-hidden="true">
-            <div class="phone a"><img src="proyectos/newbie/img/home.jpg" alt="" loading="lazy"></div>
-            <div class="phone b"><img src="proyectos/newbie/img/discover.jpg" alt="" loading="lazy"></div>
-          </div>
-          <span class="sr-only">Ver caso de estudio</span>
-        </article>
-      </div>
-    </section>
-
-    <section class="row" id="sobre-mi">
-      <div class="card label-card tint-lavender">
-        <h2>Sobre mí</h2>
-        <p>Llevo más de 5 años viendo a personas usar (y atascarse con) herramientas digitales. Hoy administro la plataforma de formación (LMS) y el ciclo completo del alumno en un centro internacional de formación ROV.</p>
-        <p>Antes llevé CRM, atención al cliente y marketing. Ese día a día me enseñó a detectar dónde se rompe un proceso para quien lo usa, y a arreglarlo. Me formé en diseño UX/UI y lo aplico a productos propios como Tu llavero y newbie.</p>
-      </div>
-      <div class="rail" aria-hidden="true"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 9 10-5 10 5-10 5Z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg></span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4Z"/></svg></span></div>
-      <div class="row-body about-body">
-        <div class="card">
-          <h3 class="label">Trayectoria</h3>
-          <ol class="path">
-          <li><div><strong>ROV Training Coordinator & LMS Administrator</strong><br><span>QSTAR ROV Training Centre & Subsea Solutions</span></div><time>2025 – hoy</time></li>
-          <li><div><strong>Administrativo</strong><br><span>Barcelona Serveis Municipals: Bicing i Endolla y Port Olímpic</span></div><time>2024 – 2025</time></li>
-          <li><div><strong>Responsable de Marketing y Administración</strong><br><span>HG Gestió Grup</span></div><time>2019 – 2023</time></li>
-          </ol>
-        </div>
-        <div class="card">
-          <h3 class="label">Formación</h3>
-          <ol class="path">
-          <li><div><strong>Grado en Marketing e Investigación de Mercados</strong><br><span>UOC</span></div><time>En curso</time></li>
-          <li><div><strong>Máster en Diseño UX/UI</strong><br><span>Nuclio Digital School</span></div><time>2023</time></li>
-          <li><div><strong>CFGS Marketing Digital y Publicidad</strong><br><span>ESN Sant Cugat</span></div><time>2017 – 2019</time></li>
-          </ol>
-        </div>
-        <div class="card toolset span-2">
-          <h3 class="label">Herramientas</h3>
-          <div class="tool-cols">
-          <div><h4>Diseño y digital</h4><ul class="chips"><li>Claude IA (Claude Design y Claude Code)</li><li>Figma</li><li>UX/UI y prototipado</li><li>Gestión web</li><li>Redes sociales</li></ul></div>
-          <div><h4>Datos y ofimática</h4><ul class="chips"><li>Power BI</li><li>SharePoint</li><li>Google Workspace</li><li>Microsoft 365</li></ul></div>
-          <div><h4>Gestión y formación</h4><ul class="chips"><li>Moodle (LMS)</li><li>HabitatSoft</li><li>Holded</li></ul></div>
-          <div><h4>Idiomas</h4><p class="langs-line">Catalán y español nativos · inglés C1, de uso profesional diario</p></div>
-          </div>
-          <a class="cv-link" href="CV_Bernat_Martinez_Rios_ES.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14"/></svg>Descargar CV en PDF</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="contact-row" id="contacto">
-      <div class="contact-band">
-        <div>
-          <h2>¿Hablamos?</h2>
-          <p>Busco mi siguiente paso como diseñador UX/UI y de producto. Si tienes una vacante, un proyecto o quieres comentar alguno de mis trabajos, escríbeme.</p>
-          <a class="mail" href="mailto:bernat.martnez@gmail.com">bernat.martnez@gmail.com</a>
-        </div>
-        <ul>
-          <li><a href="https://www.linkedin.com/in/bernatmartinezrios" target="_blank" rel="noopener">LinkedIn</a></li>
-          <li><a href="https://github.com/bernatmartinezrios" target="_blank" rel="noopener">GitHub</a></li>
-          <li><a href="CV_Bernat_Martinez_Rios_ES.pdf" download>CV en PDF</a></li>
-        </ul>
-      </div>
-    </section>
-    <footer class="site-foot"><span>© 2026 Bernat Martínez Ríos</span><span>Vacarisses, Barcelona</span></footer>
-  </div>
+  <section class="ap-contact" id="contacto">
+    <h2 class="ap-h2 ap-big ap-r">¿Hablamos?</h2>
+    <p class="ap-lead ap-r">Busco mi siguiente paso como diseñador UX/UI y de producto. Si tienes una vacante, un proyecto o quieres comentar alguno de mis trabajos, escríbeme.</p>
+    <a class="ap-mail ap-r" href="mailto:bernat.martnez@gmail.com">bernat.martnez@gmail.com</a>
+    <p class="ap-links ap-r"><a href="https://www.linkedin.com/in/bernatmartinezrios" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">›</span></a><a href="https://github.com/bernatmartinezrios" target="_blank" rel="noopener">GitHub <span aria-hidden="true">›</span></a><a href="CV_Bernat_Martinez_Rios_ES.pdf" download>CV en PDF <span aria-hidden="true">›</span></a></p>
+  </section>
 </main>
-
-<script>
-(() => {
-  const root = document.documentElement;
-  try { const t = localStorage.getItem('theme'); if (t) root.dataset.theme = t; } catch (e) {}
-  document.getElementById('theme').addEventListener('click', () => {
-    const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-    root.dataset.theme = dark ? 'light' : 'dark';
-    try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
-  });
-
-  // Menú desplegable en móvil
-  const mb = document.getElementById('menu-btn'), mn = document.getElementById('mnav');
-  if (mb && mn) {
-    const setMenu = open => { mn.hidden = !open; mb.setAttribute('aria-expanded', open); };
-    mb.addEventListener('click', () => setMenu(mn.hidden));
-    mn.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
-    addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
-    matchMedia('(min-width: 621px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
-  }
-
-  const spot = document.querySelector('.spot');
-  addEventListener('pointermove', e => {
-    spot.style.setProperty('--x', e.clientX + 'px');
-    spot.style.setProperty('--y', e.clientY + 'px');
-  }, {passive: true});
-
-  const bar = document.querySelector('.topbar');
-  const onScroll = () => bar.classList.toggle('scrolled', scrollY > 8);
-  addEventListener('scroll', onScroll, {passive: true});
-  onScroll();
-
-  // Marca en el menú la sección visible
-  const links = [...document.querySelectorAll('.topnav a')];
-  const io = new IntersectionObserver(entries => entries.forEach(en => {
-    if (!en.isIntersecting) return;
-    links.forEach(l => l.classList.toggle('active', l.hash === '#' + en.target.id));
-  }), {rootMargin: '-40% 0px -55% 0px'});
-  ['proyectos', 'sobre-mi', 'contacto'].forEach(id => io.observe(document.getElementById(id)));
-})();
-</script>
+<footer class="ap-foot"><div><span>© 2026 Bernat Martínez Ríos</span><span>Vacarisses, Barcelona</span></div></footer>
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="apple.js"></script>
 </body>
 </html>

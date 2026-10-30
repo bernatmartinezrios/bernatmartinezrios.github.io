@@ -1,0 +1,196 @@
+/* ===== Estilo Apple: grises neutros, tipografía del sistema, escenas fijas al hacer scroll =====
+   Se carga después de styles.css en todas las páginas. Las animaciones solo van con html.ap-on o html.m-on. */
+:root{
+  --bg:#FFFFFF;--surface:#F5F5F7;--ink:#1D1D1F;--muted:#6E6E73;--line:#D2D2D7;
+  --accent:#B83D18;--accent-soft:#FBE9E1;--glow:transparent;
+  --mint:#F5F5F7;--sand:#F5F5F7;--lavender:#F5F5F7;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Geist","Helvetica Neue",Arial,sans-serif;
+  --ease:cubic-bezier(.25,.1,.25,1);--ease-out:cubic-bezier(.16,1,.3,1);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#000;--surface:#161617;--ink:#F5F5F7;--muted:#86868B;--line:#424245;--accent:#F08A62;--accent-soft:#2A1A13;--mint:#161617;--sand:#161617;--lavender:#161617}
+}
+:root[data-theme="dark"]{--bg:#000;--surface:#161617;--ink:#F5F5F7;--muted:#86868B;--line:#424245;--accent:#F08A62;--accent-soft:#2A1A13;--mint:#161617;--sand:#161617;--lavender:#161617}
+body{font-family:var(--font);letter-spacing:-.01em}
+.spot,.m-progress{display:none}
+h1,h2,h3{letter-spacing:-.02em}
+
+/* Barra superior fina y translúcida */
+.topbar{background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px)}
+.topbar .wrap{height:52px;width:min(1024px,100% - 32px)}
+.brandname{font-weight:600;font-size:.95rem}
+.topnav a{font-size:.8rem;font-weight:400;color:var(--ink);opacity:.8;padding:6px 12px}
+.topnav a:hover,.topnav a.active{background:none;opacity:1}
+.topnav .icon-btn{width:32px;height:32px;border-radius:50%;border:0;background:transparent;color:var(--ink)}
+.topnav .icon-btn svg{width:17px;height:17px}
+.topnav .lang{border:0;font-size:.78rem;opacity:.8}
+.topnav a.pill{background:var(--accent);color:#fff;opacity:1;border-radius:999px;padding:5px 14px;font-size:.78rem;font-weight:500;margin-left:8px}
+.topnav a.pill:hover{filter:brightness(1.08)}
+.btn{border-radius:999px;height:44px;font-weight:500}
+.btn:hover{transform:none;filter:brightness(1.1)}
+.photo-pill{border-radius:999px}
+.status{font-weight:500}
+
+/* ---------- Portada ---------- */
+.ap{position:relative;z-index:1;overflow-x:clip}
+.ap-eyebrow{font-size:clamp(1rem,1.6vw,1.3rem);font-weight:600;color:var(--accent);letter-spacing:-.01em}
+.ap-title{font-size:clamp(3rem,9vw,7.5rem);font-weight:700;line-height:1.02;letter-spacing:-.035em;margin-top:10px}
+.ap-sub{font-size:clamp(1.15rem,2vw,1.6rem);font-weight:500;color:var(--muted);max-width:32ch;margin:18px auto 0;line-height:1.3;letter-spacing:-.015em}
+.ap-links{display:flex;gap:28px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:28px}
+.ap-links a{color:var(--accent);font-size:clamp(1rem,1.4vw,1.15rem)}
+.ap-links a:hover{text-decoration:underline}
+.ap-links a.ap-btn{background:var(--accent);color:#fff;padding:11px 22px;border-radius:999px}
+.ap-links a.ap-btn:hover{text-decoration:none;filter:brightness(1.08)}
+.ap-h2{font-size:clamp(2.6rem,6.4vw,5rem);font-weight:700;line-height:1.05;letter-spacing:-.03em;text-align:center;margin:0}
+.ap-lead{font-size:clamp(1.1rem,1.8vw,1.45rem);font-weight:500;color:var(--muted);text-align:center;max-width:40ch;margin:16px auto 0;line-height:1.35}
+.ap-label{font-size:.85rem;font-weight:600;color:var(--muted);margin-bottom:14px;letter-spacing:0}
+
+/* Teléfono */
+.ap-phone{position:relative;aspect-ratio:412/866;border-radius:clamp(28px,4vw,48px);overflow:hidden;background:#000;box-shadow:0 40px 80px -30px rgba(0,0,0,.35)}
+.ap-phone.framed{border:clamp(6px,.8vw,10px) solid #1D1D1F;aspect-ratio:auto}
+.ap-phone img{width:100%;height:auto;display:block}
+.ap-phone img + img{position:absolute;inset:0}
+.ap-phone img{transition:opacity .6s var(--ease),transform .9s var(--ease-out)}
+
+/* Hero */
+.ap-hero{text-align:center;padding-top:clamp(48px,9vh,110px)}
+.ap-hero-copy{padding:0 16px}
+.ap-hero-phones{display:flex;justify-content:center;align-items:center;gap:clamp(28px,4vw,64px);margin-top:clamp(36px,6vh,64px);padding:0 16px}
+.ap-hero-phones{flex-wrap:wrap}
+.ap-hero-note{flex:0 0 100%;order:9;font-size:.8rem;color:var(--muted);margin-top:-8px}
+.ap-hero-devs{display:flex;align-items:flex-start;gap:clamp(20px,3.2vw,48px)}
+.ap-hero-next{padding:clamp(96px,14vw,160px) 16px 0;scroll-margin-top:52px}
+.ap-hc{width:clamp(200px,19vw,260px);text-align:left}
+.ap-hc.l{text-align:right}
+.ap-hc-status{font-size:.85rem;font-weight:600;color:var(--accent)}
+.ap-hc-name{font-size:clamp(1.5rem,2.2vw,2rem);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-top:6px}
+.ap-hc-desc{font-size:1rem;line-height:1.45;color:var(--muted);margin-top:10px}
+.ap-hc-links{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.ap-hc.l .ap-hc-links{align-items:flex-end}
+.ap-hc a{white-space:nowrap;font-weight:500;color:var(--accent)}
+.ap-hc a:hover{text-decoration:underline}
+@media (min-width:1024px){.ap-dev figcaption{display:none}}
+@media (max-width:1023px){
+  .ap-hero-phones{flex-wrap:wrap;column-gap:clamp(16px,3.2vw,48px);row-gap:20px}
+  .ap-hero-devs{order:-1;flex:0 0 100%;justify-content:center;gap:inherit}
+  .ap-dev figcaption{display:none}
+  .ap-hc,.ap-hc.l{width:var(--w);text-align:center;--w:clamp(150px,min(15vw,21svh),230px)}
+  .ap-hc-name{font-size:1.25rem;margin-top:4px}
+  .ap-hc-desc{font-size:.86rem;margin-top:6px}
+  .ap-hc a{font-size:.9rem}
+  .ap-hc .ap-hc-links,.ap-hc.l .ap-hc-links{align-items:center;margin-top:8px;gap:4px}
+}
+@media (max-width:760px){.ap-hc,.ap-hc.l{--w:min(40vw,190px)}.ap-hc-desc{display:none}}
+html.ap-on .ap-hero-next{position:absolute;left:0;right:0;top:clamp(28px,5vh,64px);padding:0 16px;visibility:hidden}
+html.ap-on .ap-hero-next .ap-h2{font-size:clamp(2.4rem,5vw,4rem)}
+html.ap-on .ap-hero-next .ap-lead{margin-top:10px}
+.ap-dev{--w:clamp(150px,min(15vw,21svh),230px);width:var(--w);margin:0}
+.ap-dev-frame{padding:calc(var(--w) * .035);border-radius:calc(var(--w) * .17);background:#1D1D1F;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 1px 0 1px #3a3a3c,0 40px 70px -34px rgba(0,0,0,.45)}
+.ap-dev-screen{aspect-ratio:9/19.5;border-radius:calc(var(--w) * .135);overflow:hidden;background:var(--sb);display:flex;flex-direction:column}
+.ap-dev-sb{flex:0 0 auto;height:calc(var(--w) * .13);display:flex;align-items:center;justify-content:space-between;padding:0 calc(var(--w) * .085);position:relative;color:#1D1D1F;background:var(--sb)}
+.sb-time{font-size:calc(var(--w) * .052);font-weight:600;letter-spacing:-.01em}
+.sb-island{position:absolute;left:50%;top:calc(var(--w) * .03);translate:-50% 0;width:30%;height:calc(var(--w) * .075);border-radius:99px;background:#000}
+.sb-icons{width:calc(var(--w) * .12);height:auto}
+.ap-dev-screen img{flex:1 1 0;min-height:0;width:100%;object-fit:cover;object-position:top center;display:block}
+.ap-dev figcaption{margin-top:14px;font-size:.9rem;font-weight:500;color:var(--muted);letter-spacing:-.01em}
+
+/* Proyecto: cabecera y escena */
+.ap-section-head{padding:clamp(96px,14vw,180px) 16px clamp(40px,6vw,72px)}
+.ap-product{background:var(--surface);padding:clamp(72px,10vw,120px) 0 0}
+.ap-product + .ap-product{margin-top:0}
+.ap-product.dark{background:#000;color:#F5F5F7;--ink:#F5F5F7;--muted:#86868B;--line:#424245;--surface:#1D1D1F;--accent:#F08A62;--accent-soft:#2A1A13}
+.ap-product-head{text-align:center;padding:0 16px}
+.ap-logo{width:64px;height:64px;margin:0 auto 18px;border-radius:16px}
+.ap-product-head h3{font-size:clamp(2.6rem,6vw,4.8rem);font-weight:700;line-height:1;letter-spacing:-.035em}
+.ap-tag{font-size:clamp(1.15rem,2vw,1.6rem);font-weight:500;line-height:1.3;max-width:30ch;margin:14px auto 0;letter-spacing:-.015em}
+.ap-cap{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:.92rem;margin-top:18px}
+.ap-cap .status{margin:0}
+.ap-sticky{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:clamp(32px,6vw,96px);width:min(1024px,100% - 32px);margin:0 auto;padding:clamp(48px,7vw,80px) 0}
+.ap-stage{display:flex;flex-direction:column;align-items:center;gap:22px}
+.ap-stage .ap-phone{width:clamp(200px,24vw,300px)}
+.ap-dots{display:flex;gap:8px}
+.ap-dots i{width:8px;height:8px;border-radius:999px;background:var(--line);transition:width .4s var(--ease-out),background .4s}
+.ap-dots i.on{width:24px;background:var(--ink)}
+.ap-steps{display:grid;gap:clamp(24px,4vh,40px)}
+.ap-step h4{font-size:clamp(1.4rem,2.4vw,2rem);font-weight:700;letter-spacing:-.025em;line-height:1.1}
+.ap-step p{font-size:clamp(1.02rem,1.4vw,1.2rem);color:var(--muted);margin-top:10px;max-width:38ch;line-height:1.45}
+.ap-steps .source{font-size:.82rem}
+.ap-track{display:flex;height:100%;will-change:transform}
+.ap-track img{flex:0 0 100%;width:100%;height:auto;position:static!important;opacity:1!important;transition:none}
+.ap-phone.framed .ap-track{aspect-ratio:780/1688}
+
+/* Texto que se ilumina palabra a palabra */
+.ap-now{width:min(980px,100% - 32px);margin:0 auto;padding:clamp(110px,16vw,200px) 0}
+.ap-now .ap-eyebrow{margin-bottom:22px}
+.ap-reveal{font-size:clamp(1.8rem,4.4vw,3.5rem);font-weight:700;line-height:1.14;letter-spacing:-.03em}
+.ap-reveal span{transition:color .3s}
+
+/* Sobre mí: rejilla de mosaicos */
+.ap-about{width:min(1024px,100% - 32px);margin:0 auto}
+.ap-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:clamp(40px,6vw,64px)}
+.ap-tile{background:var(--surface);border-radius:28px;padding:clamp(24px,3.4vw,40px);position:relative;overflow:hidden}
+.ap-tile.wide{grid-column:1/-1}
+.ap-tile.photo{padding:0;min-height:420px}
+.ap-tile.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%;filter:grayscale(1)}
+.ap-tile.photo .photo-pill{position:absolute;left:20px;bottom:20px}
+.ap-tile.text{display:flex;flex-direction:column;justify-content:center;gap:16px}
+.ap-tile.text p{font-size:clamp(1.05rem,1.5vw,1.25rem);font-weight:500;line-height:1.45;letter-spacing:-.012em}
+.ap-tile.text p + p{color:var(--muted)}
+.ap-tile .path li{border-top-color:var(--line)}
+.ap-tile .path li:last-child{border-bottom:0}
+.ap-tile .tool-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.ap-tile .tool-cols h4{font-size:.95rem;font-weight:600;margin-bottom:10px}
+.ap-tile .chips li{background:var(--bg);color:var(--ink);border:1px solid var(--line);font-weight:400}
+.ap-tile .niche li{background:var(--bg);border-color:var(--line);font-weight:400}
+
+/* Contacto y pie */
+.ap-contact{text-align:center;padding:clamp(120px,16vw,200px) 16px clamp(96px,12vw,150px)}
+.ap-big{font-size:clamp(3rem,9vw,7rem)}
+.ap-mail{display:inline-block;font-size:clamp(1.3rem,3vw,2.2rem);font-weight:600;color:var(--accent);margin-top:32px;letter-spacing:-.02em;word-break:break-all}
+.ap-mail:hover{text-decoration:underline}
+.ap-foot{border-top:1px solid var(--line);background:var(--surface)}
+.ap-foot div{width:min(1024px,100% - 32px);margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:18px 0 28px;font-size:.78rem;color:var(--muted)}
+
+/* ---------- Animaciones: las mueve GSAP + ScrollTrigger (apple.js). Aquí solo el montaje ----------
+   html.ap-on solo se pone si hay JS y no se pide reducir el movimiento. */
+html.ap-on .ap-hero{height:230vh;padding-top:0}
+html.ap-on .ap-hc,html.ap-on .ap-hero-note{visibility:hidden}
+html.ap-on .ap-hero-sticky{position:sticky;top:52px;height:calc(100svh - 52px);display:flex;flex-direction:column;justify-content:flex-start;padding-top:clamp(40px,8vh,96px);overflow:hidden}
+html.ap-on .ap-hero-phones{transform-origin:50% 0}
+html.ap-on [data-scene]{height:calc(var(--n,3) * 85vh + 100vh)}
+html.ap-on .ap-sticky{position:sticky;top:52px;height:calc(100svh - 52px);padding:0}
+html.ap-on .ap-r{visibility:hidden}
+
+/* ---------- Casos de estudio ---------- */
+.case-main{width:min(1024px,100% - 32px)}
+.case-hero{text-align:center}
+.case-hero h1{font-size:clamp(2.6rem,6vw,4.6rem);font-weight:700;letter-spacing:-.035em;line-height:1.04;margin-inline:auto}
+.case-hero .lead{margin-inline:auto}
+.case-banner{border-radius:28px}
+.meta div,.tldr,.summary > div{border-radius:20px}
+
+/* ---------- Móvil ---------- */
+@media (max-width:760px){
+  .ap-sticky{grid-template-columns:1fr;gap:20px;text-align:center}
+  .ap-stage .ap-phone{width:min(48vw,230px)}
+  .ap-step p{margin-inline:auto}
+  html.ap-on .ap-sticky{align-content:center}
+  html.ap-on .ap-steps{display:block;position:relative;min-height:9.5em}
+  html.ap-on .ap-steps{overflow:hidden}
+  html.ap-on .ap-step{position:absolute;inset:0 0 auto}
+  html.ap-on .ap-steps .source{position:absolute;left:0;right:0;bottom:0}
+  .ap-grid{grid-template-columns:1fr}
+  .ap-tile .tool-cols{grid-template-columns:1fr}
+  .ap-tile.photo{min-height:0;aspect-ratio:4/5}
+  .ap-dev{--w:min(40vw,190px)}
+  .ap-hero-phones{gap:16px}
+}
+@media (prefers-reduced-motion:reduce){html.ap-on *{animation:none!important;transition:none!important}}
+
+/* ---------- Casos de estudio con GSAP (case-apple.js añade html.cs-on) ---------- */
+.jump{top:52px}
+html.cs-on .cs-w{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .02em .1em;margin:0 -.02em -.1em}
+html.cs-on .cs-w > span{display:inline-block}
+html.cs-on .strip.cs-pinned{scroll-snap-type:none;overflow-x:hidden;scrollbar-width:none}
+html.cs-on .case-banner{will-change:clip-path}
+.strip[hidden]{display:none}
